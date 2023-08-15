@@ -18,7 +18,7 @@
 # to upstream sigstore/fulcio, and a remote "origin"
 # pointing to securesign/fulcio
 
-# Synchs the release-next branch to main and then triggers CI
+# Synchs the release-next branch to master and then triggers CI
 # Usage: update-to-head.sh
 
 set -e
@@ -30,15 +30,15 @@ redhat
 EOT
 )
 redhat_files_msg=":open_file_folder: update Red Hat specific files"
-robot_trigger_msg=":robot: triggering CI on branch 'release-next' after synching from upstream/main"
+robot_trigger_msg=":robot: triggering CI on branch 'release-next' after synching from upstream/master"
 
-# Reset release-next to upstream/main.
-git fetch upstream main
-git checkout upstream/main -B release-next
+# Reset release-next to upstream/master.
+git fetch upstream master
+git checkout upstream/master -B release-next
 
-# Update redhat's main and take all needed files from there.
-git fetch origin main
-git checkout origin/main $custom_files
+# Update redhat's master and take all needed files from there.
+git fetch origin master
+git checkout origin/master $custom_files
 
 # Apply midstream patches
 if [[ -d redhat/patches ]]; then
