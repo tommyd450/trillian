@@ -41,7 +41,7 @@ git fetch origin master
 git checkout origin/master $custom_files
 
 # Apply midstream patches
-if [[ -d redhat/patches ]]; then
+if [[ -d redhat/patches ]] && [ ! "$(ls -A redhat/patches)" ]; then
   git apply redhat/patches/*
 fi
 
