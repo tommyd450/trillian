@@ -1,3 +1,0 @@
-- {{.Statement}} contains all of the terms:{{range .ClaimTerms}}
-  - [ ] {{.}}{{end}}
-- [ ] {{.Statement}} is signed by {{.Claimant}}
