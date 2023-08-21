@@ -33,7 +33,7 @@ FROM golang:1.20.7@sha256:bc5f0b5e43282627279fe5262ae275fecb3d2eae3b33977a7fd200
 COPY --from=builder /opt/app-root/src/trillian_log_signer /usr/local/bin/trillian_log_signer
 
 # Set the binary as the entrypoint of the container
-#CMD ["trillian_log_signer"]
+CMD ["trillian_log_signer"]
 
 # debug compile options & debugger
 #FROM deploy as debug

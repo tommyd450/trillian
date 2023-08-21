@@ -36,7 +36,7 @@ FROM golang:1.20.7@sha256:bc5f0b5e43282627279fe5262ae275fecb3d2eae3b33977a7fd200
 COPY --from=builder /opt/app-root/src/cmd/trillian_log_server /usr/local/bin/trillian_log_server
 
 # Set the binary as the entrypoint of the container
-#CMD ["trillian_log_server"]
+CMD ["trillian_log_server"]
 
 # debug compile options & debugger
 #FROM deploy as debug
