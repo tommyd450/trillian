@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.20.7@sha256:bc5f0b5e43282627279fe5262ae275fecb3d2eae3b33977a7fd200c7a760d6f1 AS builder
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:52ab391730a63945f61d93e8c913db4cc7a96f200de909cd525e2632055d9fa6 AS builder
 ENV APP_ROOT=/opt/app-root
 ENV GOPATH=$APP_ROOT
 ENV CGO_ENABLED=0
@@ -26,11 +26,11 @@ RUN go mod download
 # Add source code
 ADD ./ $APP_ROOT/src/
  
-RUN go build ./cmd/trillian_log_server
+RUN go build ./cmd/trillian_log_server/main.go
 
 
 # Multi-Stage production build
-FROM golang:1.20.7@sha256:bc5f0b5e43282627279fe5262ae275fecb3d2eae3b33977a7fd200c7a760d6f1 as deploy
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:52ab391730a63945f61d93e8c913db4cc7a96f200de909cd525e2632055d9fa6 as deploy
 
 # Retrieve the binary from the previous stage
 COPY --from=builder /opt/app-root/src/cmd/trillian_log_server /usr/local/bin/trillian_log_server
