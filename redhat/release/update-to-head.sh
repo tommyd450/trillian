@@ -42,7 +42,7 @@ redhat
 EOT
 )
 redhat_files_msg=":open_file_folder: update Red Hat specific files"
-robot_trigger_msg=":robot: triggering CI on branch ${redhat_ref} after synching from upstream/master"
+robot_trigger_msg=":robot: triggering CI on branch ${redhat_ref} after synching from upstream/${upstream_ref}"
 
 # Reset release-next to upstream master or <git-ref>.
 git fetch upstream $upstream_ref
