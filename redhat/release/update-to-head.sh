@@ -21,7 +21,7 @@
 # Synchs the release-next branch to master and then triggers CI
 # Usage: update-to-head.sh
 
-f [ "$#" -ne 1 ]; then
+if [ "$#" -ne 1 ]; then
     upstream_ref="main"
     midstream_ref="main"
     redhat_ref="release-next"
