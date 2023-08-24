@@ -22,8 +22,8 @@
 # Usage: update-to-head.sh
 
 if [ "$#" -ne 1 ]; then
-    upstream_ref="main"
-    midstream_ref="main"
+    upstream_ref="master"
+    midstream_ref="master"
     redhat_ref="release-next"
 else
     upstream_ref=$1
@@ -42,17 +42,17 @@ redhat
 EOT
 )
 redhat_files_msg=":open_file_folder: update Red Hat specific files"
-robot_trigger_msg=":robot: triggering CI on branch 'release-next' after synching from upstream/master"
+robot_trigger_msg=":robot: triggering CI on branch ${redhat_ref} after synching from upstream/master"
 
-# Reset release-next to upstream main or <git-ref>.
+# Reset release-next to upstream master or <git-ref>.
 git fetch upstream $upstream_ref
-if [[ "$upstream_ref" == "main" ]]; then
-  git checkout upstream/main -B ${redhat_ref}
+if [[ "$upstream_ref" == "master" ]]; then
+  git checkout upstream/master -B ${redhat_ref}
 else
   git checkout $upstream_ref -B ${redhat_ref}
 fi
 
-# Update redhat's main and take all needed files from there.
+# Update redhat's master and take all needed files from there.
 git fetch origin $midstream_ref
 git checkout origin/$midstream_ref $custom_files
 
