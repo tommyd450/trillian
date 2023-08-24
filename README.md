@@ -1,4 +1,4 @@
-# Red Hat SecureSign Rekor
+# Red Hat SecureSign Trillian
 
 This repository holds the Red Hat fork of
 `google/trillian` with modifications needed only for Red Hat.
