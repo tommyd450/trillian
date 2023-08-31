@@ -65,7 +65,7 @@ fi
 
 
 git mv redhat/overlays/log_signer/Dockerfile.logsigner .
-git mv redhat/release/log_server/DOckerfile.logserver .
+git mv redhat/release/log_server/Dockerfile.logserver .
 
 git add . # Adds applied patches
 git add $custom_files # Adds custom files
