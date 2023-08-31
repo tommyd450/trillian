@@ -21,6 +21,7 @@
 # Synchs the release-next branch to master and then triggers CI
 # Usage: update-to-head.sh
 
+
 if [ "$#" -ne 1 ]; then
     upstream_ref="master"
     midstream_ref="master"
@@ -56,13 +57,15 @@ fi
 git fetch origin $midstream_ref
 git checkout origin/$midstream_ref $custom_files
 
+
 # Apply midstream patches
 if [[ -d redhat/patches ]] && [ "$(ls -A redhat/patches)" ]; then
   git apply redhat/patches/*
 fi
 
-git mv /redhat/overlays/log_signer/Dockerfile.logsigner .
-git mv /redhat/release/log_server/DOckerfile.logserver .
+
+git mv redhat/overlays/log_signer/Dockerfile.logsigner .
+git mv redhat/release/log_server/DOckerfile.logserver .
 
 git add . # Adds applied patches
 git add $custom_files # Adds custom files
@@ -78,6 +81,7 @@ date > ci
 git add ci
 git commit -m "${robot_trigger_msg}"
 git push -f origin "${redhat_ref}-ci"
+
 
 if hash hub 2>/dev/null; then
    # Test if there is already a sync PR in
