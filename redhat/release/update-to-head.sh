@@ -61,8 +61,8 @@ if [[ -d redhat/patches ]] && [ "$(ls -A redhat/patches)" ]; then
   git apply redhat/patches/*
 fi
 
-git mv redhat/overlays/log_server/Dockerfile.logserver .
-git mv redhat/overlays/log_signer/Dockerfile.logsigner .
+cp redhat/overlays/log_server/Dockerfile.logserver .
+cp redhat/overlays/log_signer/Dockerfile.logsigner .
 
 git add . # Adds applied patches
 git add $custom_files # Adds custom files
