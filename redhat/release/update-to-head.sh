@@ -69,6 +69,7 @@ fi
 
 cp redhat/overlays/log_server/Dockerfile.logserver .
 cp redhat/overlays/log_signer/Dockerfile.logsigner .
+cp redhat/overlays/trillian_db/Dockerfile.database .
 
 git add . # Adds applied patches
 git add $custom_files # Adds custom files
