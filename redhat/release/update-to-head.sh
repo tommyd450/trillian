@@ -60,7 +60,7 @@ git checkout origin/$midstream_ref $custom_files
 # Fetch those from origin and apply them to the the release branch
 # since we just wiped out our local copy with the upstream ref.
 git fetch origin $redhat_ref
-git checkout origin/$redhat_ref .tekton
+#git checkout origin/$redhat_ref .tekton
 
 # Apply midstream patches
 if [[ -d redhat/patches ]] && [ "$(ls -A redhat/patches)" ]; then
