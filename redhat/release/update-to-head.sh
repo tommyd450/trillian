@@ -67,12 +67,6 @@ if [[ -d redhat/patches ]] && [ "$(ls -A redhat/patches)" ]; then
   git apply redhat/patches/*
 fi
 
-# RHTAP writes its pipeline files to the root of ${redhat_ref}
-# Fetch those from origin and apply them to the the release branch
-# since we just wiped out our local copy with the upstream ref.
-git fetch origin $redhat_ref
-git checkout origin/$redhat_ref .tekton
-
 # Move overlays to root
 if [[ -d redhat/overlays ]]; then
   git mv redhat/overlays/* .
