@@ -72,7 +72,9 @@ if [[ -d redhat/overlays ]]; then
   git mv redhat/overlays/* .
 fi
 
-
+if [[ -d redhat/overlays ]]; then
+  git mv redhat/.github/workflows* redhat/.github/workflows
+fi
 
 git add . # Adds applied patches
 git add $custom_files # Adds custom files
