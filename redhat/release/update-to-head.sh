@@ -73,7 +73,7 @@ if [[ -d redhat/overlays ]]; then
 fi
 
 if [[ -d redhat/overlays ]]; then
-  git mv redhat/.github/workflows* .
+  git mv redhat/.github/workflow/* .github/workflows/
 fi
 
 git add . # Adds applied patches
