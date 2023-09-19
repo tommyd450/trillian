@@ -1,0 +1,42 @@
+name: Integration Test using trillianDB
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release-next
+      - redhat-v1.5.2
+  pull_request:
+    branches:
+      - release-next
+      - redhat-v1.5.2
+
+jobs:
+  integration:
+    services:
+      mysql:
+        image: quay.io/securesign/trillian-db:redhat-v1.5.2
+        env:
+          MYSQL_USER: test
+          MYSQL_DATABASE: test
+          MYSQL_PASSWORD: zaphod
+        ports:
+          - "3306:3306"
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Go Tests
+        run: go test ./...
+
+      - name: Integration Tests
+        run: |
+          sudo apt-get update
+          sudo apt install -y lsof
+          ./integration/log_integration_test.sh
