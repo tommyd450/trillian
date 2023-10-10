@@ -9,3 +9,9 @@ RUN chmod -R 775 /docker-entrypoint-initdb.d && \
     chmod 644 /etc/mysql/conf.d/trillian.cnf && \
     chmod 775 /usr/share/container-scripts/mysql/init/60-load-db.sh
 USER 1001
+
+LABEL description="MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system"
+LABEL io.k8s.description="MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system"
+LABEL io.k8s.display-name="trillian_db"
+LABEL io.openshift.tags="trillian database trusted-signer"
+LABEL summary="Provides the trillian netcat binary for running trillian netcat"
