@@ -47,20 +47,19 @@ robot_trigger_msg=":robot: triggering CI on branch ${redhat_ref} after synching 
 # Reset release-next to upstream master or <git-ref>.
 git fetch upstream $upstream_ref
 if [[ "$upstream_ref" == "master" ]]; then
-  git checkout upstream/master -B ${redhat_ref}
+  git checkout upstream/master -B ${redhat_ref}-ci
 else
-  git checkout $upstream_ref -B ${redhat_ref}
+  git checkout $upstream_ref -B ${redhat_ref}-ci
 fi
+
+# RHTAP writes its pipeline files to the root of ${redhat_ref}
+# Fetch those from origin and merge them into the ci branch
+git fetch origin $redhat_ref
+git merge origin/$redhat_ref --no-edit
 
 # Update redhat's master and take all needed files from there.
 git fetch origin $midstream_ref
 git checkout origin/$midstream_ref $custom_files
-
-# RHTAP writes its pipeline files to the root of ${redhat_ref}
-# Fetch those from origin and apply them to the the release branch
-# since we just wiped out our local copy with the upstream ref.
-git fetch origin $redhat_ref
-git checkout origin/$redhat_ref .tekton
 
 # Apply midstream patches
 if [[ -d redhat/patches ]] && [ "$(ls -A redhat/patches)" ]; then
@@ -69,7 +68,7 @@ fi
 
 # Move overlays to root
 if [[ -d redhat/overlays ]]; then
-  git mv redhat/overlays/* .
+  mv redhat/overlays/* .
 fi
 
 git add . # Adds applied patches
@@ -77,7 +76,6 @@ git add $custom_files # Adds custom files
 git commit -m "${redhat_files_msg}"
 
 # Trigger CI
-git checkout "${redhat_ref}" -B "${redhat_ref}"-ci
 git push -f origin "${redhat_ref}-ci"
 
 if hash hub 2>/dev/null; then
