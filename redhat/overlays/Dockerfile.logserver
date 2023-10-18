@@ -21,5 +21,11 @@ FROM registry.access.redhat.com/ubi9/go-toolset@sha256:52ab391730a63945f61d93e8c
 # Retrieve the binary from the previous stage
 COPY --from=builder /opt/app-root/src/trillian_log_server /
 
+LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
+LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
+LABEL io.k8s.display-name="trillian_log_server"
+LABEL io.openshift.tags="trillian-logserver trusted-signer"
+LABEL summary="Provides the trillian logserver binary for running trillian logserver"
+
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/trillian_log_server"]
