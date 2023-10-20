@@ -18,7 +18,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: https://raw.githubusercontent.com/securesign/trillian/redhat-v1.5.2/Dockerfile.database
+    value: Dockerfile.database
   - name: git-url
     value: '{{repo_url}}'
   - name: output-image

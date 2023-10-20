@@ -19,7 +19,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: https://raw.githubusercontent.com/securesign/trillian/redhat-v1.5.2/Dockerfile.logserver
+    value: Dockerfile.logserver
   - name: git-url
     value: '{{repo_url}}'
   - name: image-expires-after
