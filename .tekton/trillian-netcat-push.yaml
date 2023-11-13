@@ -8,6 +8,7 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: '[push]'
     pipelinesascode.tekton.dev/on-target-branch: '[redhat-v1.5.2]'
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "redhat-v0.6.5" && ( ".tekton/trillian-netcat-push.yaml".pathChanged() || "/Dockerfile.netcat".pathChanged() )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rhtas-stack-1-0-beta
