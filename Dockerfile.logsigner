@@ -1,0 +1,31 @@
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:82d9bc5d3ceb43635288880f26207201e55d1c688a60ebbfff4f54d4963a62a1 AS builder
+ENV APP_ROOT=/opt/app-root
+ENV GOPATH=$APP_ROOT
+ENV CGO_ENABLED=false
+ENV -buildvcs=false
+
+WORKDIR $APP_ROOT/src/
+ADD go.mod go.sum $APP_ROOT/src/
+RUN go mod download
+RUN git config --global --add safe.directory /opt/app-root/src
+
+# Add source code
+ADD ./ $APP_ROOT/src/
+
+RUN go build -v ./cmd/trillian_log_signer
+
+
+# Multi-Stage production build
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:b40f52aa68b29634ff45429ee804afbaa61b33de29ae775568933c71610f07a4 AS deploy
+
+# Retrieve the binary from the previous stage
+COPY --from=builder /opt/app-root/src/trillian_log_signer /
+
+LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
+LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
+LABEL io.k8s.display-name="trillian_log_signer"
+LABEL io.openshift.tags="trillian-logsigner trusted-signer"
+LABEL summary="Provides the trillian logsigner binary for running trillian logsigner"
+
+# Set the binary as the entrypoint of the container
+ENTRYPOINT ["/trillian_log_signer"]
