@@ -6,7 +6,7 @@ metadata:
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "redhat-v1.5" && ( "60-load-db.sh".pathChanged() || "examples/deployment/docker/db_server/mysql.cnf".pathChanged() || "storage/mysql/schema/storage.sql".pathChanged() || ".tekton/trillian-database-1-5-pull-request.yaml".pathChanged() || "Dockerfile.database".pathChanged() )
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "redhat-v1.5"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: trillian-1-0-gamma
