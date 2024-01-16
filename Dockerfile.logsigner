@@ -29,3 +29,4 @@ LABEL summary="Provides the trillian logsigner binary for running trillian logsi
 
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/trillian_log_signer"]
+#
