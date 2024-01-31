@@ -7,13 +7,13 @@ metadata:
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "redhat-v1.5" && ( ".tekton/trillian-netcat-1-5-pull-request.yaml".pathChanged() || "Dockerfile.netcat".pathChanged() )
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" && ( ".tekton/netcat-pull-request.yaml".pathChanged() || "Dockerfile.netcat".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian-1-0-gamma
-    appstudio.openshift.io/component: trillian-netcat-1-5
+    appstudio.openshift.io/application: trillian
+    appstudio.openshift.io/component: netcat
     pipelines.appstudio.openshift.io/type: build
-  name: trillian-netcat-1-5-on-pull-request
+  name: netcat-on-pull-request
   namespace: rhtas-tenant
 spec:
   params:
@@ -24,7 +24,7 @@ spec:
   - name: image-expires-after
     value: 5d
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtas-tenant/trillian-1-0-gamma/trillian-netcat-1-5:on-pr-{{revision}}
+    value: quay.io/redhat-user-workloads/rhtas-tenant/trillian/netcat:on-pr-{{revision}}
   - name: path-context
     value: .
   - name: revision

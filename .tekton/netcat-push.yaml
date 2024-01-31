@@ -6,13 +6,13 @@ metadata:
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "redhat-v1.5"
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "main"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian-1-0-gamma
-    appstudio.openshift.io/component: trillian-netcat-1-5
+    appstudio.openshift.io/application: trillian
+    appstudio.openshift.io/component: netcat
     pipelines.appstudio.openshift.io/type: build
-  name: trillian-netcat-1-5-on-push
+  name: netcat-on-push
   namespace: rhtas-tenant
 spec:
   params:
@@ -21,7 +21,7 @@ spec:
   - name: git-url
     value: '{{repo_url}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtas-tenant/trillian-1-0-gamma/trillian-netcat-1-5:{{revision}}
+    value: quay.io/redhat-user-workloads/rhtas-tenant/trillian/netcat:{{revision}}
   - name: path-context
     value: .
   - name: revision
