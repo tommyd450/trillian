@@ -7,4 +7,3 @@ LABEL io.openshift.tags="trillian netcat trusted-signer"
 LABEL summary="Provides the trillian netcat binary for running trillian netcat"
 
 RUN microdnf -y install nc
-#
