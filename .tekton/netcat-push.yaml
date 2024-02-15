@@ -17,7 +17,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: Dockerfile.netcat
+    value: Dockerfile.netcat.rh
   - name: git-url
     value: '{{repo_url}}'
   - name: output-image

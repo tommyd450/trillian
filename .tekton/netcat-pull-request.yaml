@@ -7,7 +7,7 @@ metadata:
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" && ( ".tekton/netcat-pull-request.yaml".pathChanged() || "Dockerfile.netcat".pathChanged() )
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" && ( ".tekton/netcat-pull-request.yaml".pathChanged() || "Dockerfile.netcat.rh".pathChanged() )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: trillian
@@ -18,7 +18,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: Dockerfile.netcat
+    value: Dockerfile.netcat.rh
   - name: git-url
     value: '{{repo_url}}'
   - name: image-expires-after
