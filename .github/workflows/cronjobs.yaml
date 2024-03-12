@@ -11,9 +11,10 @@ jobs:
     uses: securesign/actions/.github/workflows/check-image-version.yaml@main
     strategy:
       matrix:
-        branch: [main, redhat-v1.5]
+        branch: [main]
     with:
       branch: ${{ matrix.branch }}
+      images: '["registry.access.redhat.com/ubi9/go-toolset", "registry.access.redhat.com/ubi9/ubi-minimal", "registry.redhat.io/rhel9/mariadb-105", "registry.redhat.io/rhel9/redis-6"]'
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
       registry_redhat_io_username: ${{ secrets.REGISTRY_REDHAT_IO_USERNAME }}
