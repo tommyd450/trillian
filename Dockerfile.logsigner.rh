@@ -25,6 +25,8 @@ LABEL io.k8s.description="Trillian is an implementation of the concepts describe
 LABEL io.k8s.display-name="trillian_log_signer"
 LABEL io.openshift.tags="trillian-logsigner trusted-signer"
 LABEL summary="Provides the trillian logsigner binary for running trillian logsigner"
+LABEL com.redhat.component="trillian_log_signer"
+LABEL name="trillian_log_signer"
 
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/trillian_log_signer"]

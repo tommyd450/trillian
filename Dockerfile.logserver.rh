@@ -14,7 +14,6 @@ ADD ./ $APP_ROOT/src/
 
 RUN go build -v ./cmd/trillian_log_server
 
-
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:119ac25920c8bb50c8b5fd75dcbca369bf7d1f702b82f3d39663307890f0bf26 AS deploy
 
@@ -26,6 +25,8 @@ LABEL io.k8s.description="Trillian is an implementation of the concepts describe
 LABEL io.k8s.display-name="trillian_log_server"
 LABEL io.openshift.tags="trillian-logserver trusted-signer"
 LABEL summary="Provides the trillian logserver binary for running trillian logserver"
+LABEL com.redhat.component="trillian_log_server"
+LABEL name="trillian_log_server"
 
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/trillian_log_server"]

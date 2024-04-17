@@ -6,9 +6,10 @@ LABEL io.k8s.display-name="redis container image for Red Hat trusted artifact si
 LABEL io.openshift.tags="redis, Red Hat trusted artifact signer."
 LABEL summary="Runs redis in appendonly mode with enablement for external connections by default."
 LABEL com.redhat.component="redis"
+LABEL name="redis"
 
 USER 1001
-#
+
 RUN sed -i 's/#bind 127.0.0.1 -::1/bind 0.0.0.0/g' /etc/redis/redis.conf && sed -i 's/appendonly no/appendonly yes/g' /etc/redis/redis.conf
 
 ENTRYPOINT ["container-entrypoint"]
