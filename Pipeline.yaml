@@ -8,16 +8,14 @@ spec:
       name: SNAPSHOT
       default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
       type: string
-    - description: appstudio.openshift.io/snapshot
-      name: appstudio.openshift.io/snapshot
-      default: ""
-      type: string
   tasks:
     - name: task-1
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
       params:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
+        - name: LABEL
+          value: ${context.pipelineRun.name}
       taskSpec:
         params:
         - name: SNAPSHOT
