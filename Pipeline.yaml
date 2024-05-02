@@ -39,7 +39,8 @@ spec:
             value: ${params.TOKEN}
           script: |
             dnf -y install jq
-
+            dnf -y install git
+            
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
             // Run custom tests for the given Snapshot here
