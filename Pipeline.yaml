@@ -15,7 +15,7 @@ spec:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
         - name: LABEL
-          value: ${context.pipelineRun.name}
+          value: $(context.pipelineRun.name)
       taskSpec:
         params:
         - name: SNAPSHOT
