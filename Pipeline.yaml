@@ -9,7 +9,7 @@ spec:
       default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
       type: string
     - description: appstudio.openshift.io/snapshot
-      name: LABEL
+      name: appstudio.openshift.io/snapshot
       default: ""
       type: string
   tasks:
