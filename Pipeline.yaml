@@ -8,6 +8,9 @@ spec:
       name: SNAPSHOT
       default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
       type: string
+    - description: 'token'
+      name: TOKEN
+      type: string
   tasks:
     - name: task-1
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
@@ -16,9 +19,12 @@ spec:
           value: $(params.SNAPSHOT)
         - name: LABEL
           value: $(context.pipelineRun.name)
+        - name: TOKEN
+          value: ${params.TOKEN}
       taskSpec:
         params:
         - name: SNAPSHOT
+        - name: TOKEN
         results:
         - name: TEST_OUTPUT
           description: Test output
@@ -29,6 +35,8 @@ spec:
             value: $(params.SNAPSHOT)
           - name: LABEL
             value: $(context.pipelineRun.name)
+          - name: TOKEN
+            value: ${params.TOKEN}
           script: |
             dnf -y install jq
 
@@ -37,7 +45,14 @@ spec:
             // Run custom tests for the given Snapshot here
             // After the tests finish, record the overall result in the RESULT variable
             RESULT="$LABEL"
-
+            git clone git@github.com:tommyd450/trillian.git
+            cd trillian
+            cat << EOF > ./release.yaml
+            test
+            EOF
+            git add release.yaml
+            git commit -m "Updating"
+            git push https://${TOKEN}@github.com/tommyd450/trillian.git trilltest
             // Output the standardized TEST_OUTPUT result in JSON form
             TEST_OUTPUT=$(jq -rc --arg date $(date +%s) --arg RESULT "${RESULT}" --null-input \
               '{result: $RESULT, timestamp: $date, failures: 0, successes: 1, warnings: 0}')
