@@ -68,6 +68,7 @@ spec:
             cat << EOF > ./release.yaml
             test
             gh
+            g
             EOF
             ls -a
             git remote -v
