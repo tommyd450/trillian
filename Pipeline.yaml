@@ -11,10 +11,12 @@ spec:
     - description: 'token'
       name: TOKEN
       type: string
-    - description: GITHUB_USER_NAME
+    - description: 'account'
+      name: GITHUB_USER_NAME
       default: ""
       type: string
-    - description: GITHUB_USER_EMAIL
+    - description: 'EMAIL'
+      name: GITHUB_USER_EMAIL
       default: ""
       type: string
   tasks:
