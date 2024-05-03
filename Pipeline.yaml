@@ -70,9 +70,9 @@ spec:
             EOF
             git add release.yaml
             git commit -m "Updating"
-            git remote add fork https://github.com/tommyd450/trillian.git
+            git remote add fork tommyd450:${TOKEN}@github.com/tommyd450/trillian
             git fetch fork
-            git push fork fork/trilltest
+            git push fork trilltest
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
