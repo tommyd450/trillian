@@ -60,16 +60,17 @@ spec:
             ls -a
             git config --global user.email "${GITHUB_USER_EMAIL}"
             git config --global user.name "${GITHUB_USER_NAME}"
-            git clone https://${TOKEN}@github.com:tommyd450/trillian.git
+            git clone https://:tommyd450:${TOKEN}@github.com/tommyd450/trillian
             ls -a
             cd trillian
+            git checkout main
             ls -a
             cat << EOF > ./release.yaml
             test
             EOF
             git add release.yaml
             git commit -m "Updating"
-            git push https://${TOKEN}@github.com/tommyd450/trillian.git trilltest
+            git push https://tommyd450:${TOKEN}@github.com/tommyd450/trilliantrilltest
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
