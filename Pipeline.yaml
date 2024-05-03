@@ -63,6 +63,7 @@ spec:
             git clone https://:tommyd450:${TOKEN}@github.com/tommyd450/trillian
           
             cd trillian
+            git fetch origin
             git checkout main
             cat << EOF > ./release.yaml
             test
