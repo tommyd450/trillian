@@ -68,6 +68,7 @@ spec:
             test
             EOF
             ls -a
+            git remote -v
             git add release.yaml
             git commit -m "Updating"
             git push origin trilltest -f
