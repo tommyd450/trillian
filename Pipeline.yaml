@@ -63,8 +63,6 @@ spec:
             git clone https://:tommyd450:${TOKEN}@github.com/tommyd450/trillian
           
             cd trillian
-            git remote add fork https://github.com/tommyd450/trillian.git
-            git fetch fork
             git checkout main
             cat << EOF > ./release.yaml
             test
@@ -72,7 +70,7 @@ spec:
             ls -a
             git add release.yaml
             git commit -m "Updating"
-            git push fork trilltest
+            git push origin trilltest
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
