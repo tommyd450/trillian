@@ -15,6 +15,8 @@ spec:
       default: ""
       type: string
     - description: GITHUB_USER_EMAIL
+      default: ""
+      type: string
   tasks:
     - name: task-1
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
