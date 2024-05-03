@@ -70,7 +70,8 @@ spec:
             ls -a
             git add release.yaml
             git commit -m "Updating"
-            git push origin trilltest
+            git fetch origin
+            git push origin trilltest -f
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
