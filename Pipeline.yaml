@@ -64,10 +64,14 @@ spec:
             echo -e "Token: \n ${TOKEN}"
             // Run custom tests for the given Snapshot here
             // After the tests finish, record the overall result in the RESULT variable
+            pwd
+            ls -a
             git config --global user.email "${GITHUB_USER_EMAIL}"
             git config --global user.name "${GITHUB_USER_NAME}"
             git clone https://tommyd450:${TOKEN}@github.com:tommyd450/trillian.git
+            ls -a
             cd trillian
+            ls -a
             cat << EOF > ./release.yaml
             test
             EOF
