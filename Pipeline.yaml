@@ -64,7 +64,7 @@ spec:
           
             cd trillian
             git fetch origin
-            git checkout main
+            git pull origin main
             cat << EOF > ./release.yaml
             test
             EOF
