@@ -61,17 +61,18 @@ spec:
             git config --global user.email "${GITHUB_USER_EMAIL}"
             git config --global user.name "${GITHUB_USER_NAME}"
             git clone https://:tommyd450:${TOKEN}@github.com/tommyd450/trillian
-            ls -a
+          
             cd trillian
+            git remote add fork https://github.com/tommyd450/trillian.git
+            git fetch fork
             git checkout main
-            ls -a
+            git pull fork main
             cat << EOF > ./release.yaml
             test
             EOF
+            ls -a
             git add release.yaml
             git commit -m "Updating"
-            git remote add fork tommyd450:${TOKEN}@github.com/tommyd450/trillian
-            git fetch fork
             git push fork trilltest
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
