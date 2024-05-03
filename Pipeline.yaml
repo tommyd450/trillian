@@ -67,6 +67,7 @@ spec:
             git pull origin main
             cat << EOF > ./release.yaml
             test
+            gh
             EOF
             ls -a
             git remote -v
