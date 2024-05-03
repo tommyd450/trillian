@@ -11,6 +11,10 @@ spec:
     - description: 'token'
       name: TOKEN
       type: string
+    - description: GITHUB_USER_NAME
+      default: ""
+      type: string
+    - description: GITHUB_USER_EMAIL
   tasks:
     - name: task-1
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
@@ -21,10 +25,16 @@ spec:
           value: $(context.pipelineRun.name)
         - name: TOKEN
           value: ${params.TOKEN}
+        - name: GITHUB_USER_NAME
+          value: ${params.GITHUB_USER_NAME}
+        - name: GITHUB_USER_EMAIL
+          value: ${params.GITHUB_USER_EMAIL}
       taskSpec:
         params:
         - name: SNAPSHOT
         - name: TOKEN
+        - name: GITHUB_USER_EMAIL
+        - name: GITHUB_USER_NAME
         results:
         - name: TEST_OUTPUT
           description: Test output
@@ -37,14 +47,21 @@ spec:
             value: $(context.pipelineRun.name)
           - name: TOKEN
             value: ${params.TOKEN}
+          - name: GITHUB_USER_EMAIL
+            value: ${params.GITHUB_USER_EMAIL}
+          - name: GITHUB_USER_NAME
+            value: ${params.GITHUB_USER_NAME}
           script: |
             dnf -y install jq
             dnf -y install git
-            
+
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
+            echo -e "Token: \n ${TOKEN}"
             // Run custom tests for the given Snapshot here
             // After the tests finish, record the overall result in the RESULT variable
+            git config --global user.email "$(params.GITHUB_USER_EMAIL)"
+            git config --global user.name "$(params.GITHUB_USER_NAME)"
             git clone https://tommd450:${TOKEN}@github.com:tommyd450/trillian.git
             cd trillian
             cat << EOF > ./release.yaml
