@@ -56,14 +56,6 @@ spec:
           - name: GITHUB_USER_NAME
             value: $(params.GITHUB_USER_NAME)
           script: |
-            dnf -y install jq
-            dnf -y install git
-
-            echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
-            echo -e "Test label: \n ${LABEL}"
-            echo -e "Token: \n ${TOKEN}"
-            // Run custom tests for the given Snapshot here
-            // After the tests finish, record the overall result in the RESULT variable
             pwd
             ls -a
             git config --global user.email "${GITHUB_USER_EMAIL}"
@@ -78,6 +70,13 @@ spec:
             git add release.yaml
             git commit -m "Updating"
             git push https://${TOKEN}@github.com/tommyd450/trillian.git trilltest
+
+            echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
+            echo -e "Test label: \n ${LABEL}"
+            echo -e "Token: \n ${TOKEN}"
+            // Run custom tests for the given Snapshot here
+            // After the tests finish, record the overall result in the RESULT variable
+            
             RESULT="$LABEL"
             // Output the standardized TEST_OUTPUT result in JSON form
             TEST_OUTPUT=$(jq -rc --arg date $(date +%s) --arg RESULT "${RESULT}" --null-input \
