@@ -24,11 +24,11 @@ spec:
         - name: LABEL
           value: $(context.pipelineRun.name)
         - name: TOKEN
-          value: ${params.TOKEN}
+          value: $(params.TOKEN)
         - name: GITHUB_USER_NAME
-          value: ${params.GITHUB_USER_NAME}
+          value: $(params.GITHUB_USER_NAME)
         - name: GITHUB_USER_EMAIL
-          value: ${params.GITHUB_USER_EMAIL}
+          value: $(params.GITHUB_USER_EMAIL)
       taskSpec:
         params:
         - name: SNAPSHOT
@@ -46,11 +46,11 @@ spec:
           - name: LABEL
             value: $(context.pipelineRun.name)
           - name: TOKEN
-            value: ${params.TOKEN}
+            value: $(params.TOKEN)
           - name: GITHUB_USER_EMAIL
-            value: ${params.GITHUB_USER_EMAIL}
+            value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
-            value: ${params.GITHUB_USER_NAME}
+            value: $(params.GITHUB_USER_NAME)
           script: |
             dnf -y install jq
             dnf -y install git
