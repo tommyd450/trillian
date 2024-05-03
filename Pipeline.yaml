@@ -70,7 +70,7 @@ spec:
             EOF
             git add release.yaml
             git commit -m "Updating"
-            git push https://tommyd450:${TOKEN}@github.com/tommyd450/trilliantrilltest
+            git push https://tommyd450:${TOKEN}@github.com/tommyd450/trillian trilltest
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
