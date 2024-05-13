@@ -77,7 +77,7 @@ spec:
             git add release.yaml
             git commit -m "Updating"
             git status
-            git push origin trilltest -f
+            git push origin main -f
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
