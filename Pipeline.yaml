@@ -83,6 +83,7 @@ spec:
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
             echo -e "Token: \n ${TOKEN}"
+            jq ${SNAPSHOT}
             // Run custom tests for the given Snapshot here
             // After the tests finish, record the overall result in the RESULT variable
             
