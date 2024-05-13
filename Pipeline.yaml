@@ -65,6 +65,7 @@ spec:
             cd trillian
             git remote -v
             git fetch origin
+            git checkout trilltest
             git checkout main
             cat << EOF > ./release.yaml
             test
@@ -77,7 +78,7 @@ spec:
             git add release.yaml
             git commit -m "Updating"
             git status
-            git push origin main -f
+            git push origin trilltest -f
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
