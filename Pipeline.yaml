@@ -65,7 +65,6 @@ spec:
             cd trillian
             git remote -v
             git fetch origin
-            git pull origin main
             cat << EOF > ./release.yaml
             test
             gh
