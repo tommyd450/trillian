@@ -75,13 +75,18 @@ spec:
             gh
             g
             r
+            g
+            g
+            g
+            g
+            g
             EOF
             ls -a
             git remote -v
             git add release.yaml
             git commit -m "Updating"
             git status
-            git push origin main:trilltest -f
+            git push origin trilltest:trilltest -f
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
