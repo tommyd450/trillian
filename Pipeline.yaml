@@ -55,6 +55,10 @@ spec:
             value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
             value: $(params.GITHUB_USER_NAME)
+          - name: CHECK_RUN_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           script: |
             pwd
             ls -a
