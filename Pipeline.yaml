@@ -71,6 +71,8 @@ spec:
             gh
             g
             r
+            g
+            g
             EOF
             ls -a
             git remote -v
