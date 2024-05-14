@@ -44,7 +44,7 @@ spec:
         - name: TEST_OUTPUT
           description: Test output
         steps:
-        - image: registry.redhat.io/openshift4/ose-cli:latest
+        - image: registry.redhat.io/openshift4/ose-cli@sha256:4257542c6e7343abd048f8b1c1e06afeed8d4e4bfafe8621fcfa32b92c77b644
           env:
           - name: SNAPSHOT
             value: $(params.SNAPSHOT)
@@ -56,6 +56,10 @@ spec:
             value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
             value: $(params.GITHUB_USER_NAME)
+          - name: CHECK_RUN_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           script: |
             pwd
             ls -a
