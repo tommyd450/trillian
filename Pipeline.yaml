@@ -56,10 +56,6 @@ spec:
             value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
             value: $(params.GITHUB_USER_NAME)
-          - name: CHECK_RUN_ID
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           script: |
             pwd
             ls -a
@@ -91,7 +87,7 @@ spec:
 
 
             echo -e "Test label: \n ${LABEL}"
-            echo -e "Run ID: \n ${CHECK_RUN_ID}"
+            
             echo -e "Token: \n ${TOKEN}"
             jq ${SNAPSHOT}
             // Run custom tests for the given Snapshot here
