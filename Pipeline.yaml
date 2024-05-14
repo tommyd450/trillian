@@ -27,6 +27,7 @@ spec:
           value: $(params.SNAPSHOT)
         - name: LABEL
           value: $(context.pipelineRun.name)
+        - name: PIPELINE_RUN_ID
         - name: TOKEN
           value: $(params.TOKEN)
         - name: GITHUB_USER_NAME
@@ -55,6 +56,10 @@ spec:
             value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
             value: $(params.GITHUB_USER_NAME)
+          - name: CHECK_RUN_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           script: |
             pwd
             ls -a
@@ -66,7 +71,6 @@ spec:
             git remote -v
             git fetch origin
             git checkout trilltest
-            git checkout main
             cat << EOF > ./release.yaml
             test
             gh
@@ -79,8 +83,12 @@ spec:
             git commit -m "Updating"
             git status
             git push origin main:trilltest -f
-
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
+
+            newDigest = $(echo ${SNAPSHOT} | jq '.components[0].containerImage')
+            
+
+
             echo -e "Test label: \n ${LABEL}"
             echo -e "Token: \n ${TOKEN}"
             jq ${SNAPSHOT}
