@@ -90,6 +90,7 @@ spec:
 
 
             echo -e "Test label: \n ${LABEL}"
+            echo -e "Run ID: \n ${CHECK_RUN_ID}"
             echo -e "Token: \n ${TOKEN}"
             jq ${SNAPSHOT}
             // Run custom tests for the given Snapshot here
