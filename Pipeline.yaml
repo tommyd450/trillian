@@ -27,7 +27,6 @@ spec:
           value: $(params.SNAPSHOT)
         - name: LABEL
           value: $(context.pipelineRun.name)
-        - name: PIPELINE_RUN_ID
         - name: TOKEN
           value: $(params.TOKEN)
         - name: GITHUB_USER_NAME
@@ -44,7 +43,7 @@ spec:
         - name: TEST_OUTPUT
           description: Test output
         steps:
-        - image: registry.redhat.io/openshift4/ose-cli@sha256:4257542c6e7343abd048f8b1c1e06afeed8d4e4bfafe8621fcfa32b92c77b644
+        - image: registry.access.redhat.com/ubi9/go-toolset@sha256:ace149b17c62803c8a4d3ecfbc0c17dd9a4242ea3f0a6f14a4578474e34c3c3e
           env:
           - name: SNAPSHOT
             value: $(params.SNAPSHOT)
@@ -56,10 +55,6 @@ spec:
             value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
             value: $(params.GITHUB_USER_NAME)
-          - name: CHECK_RUN_ID
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           script: |
             pwd
             ls -a
@@ -71,10 +66,10 @@ spec:
             git remote -v
             git fetch origin
             git checkout trilltest
+            git checkout main
             cat << EOF > ./release.yaml
             test
             gh
-            g
             g
             r
             EOF
@@ -84,14 +79,9 @@ spec:
             git commit -m "Updating"
             git status
             git push origin main:trilltest -f
+
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
-
-            newDigest = $(echo ${SNAPSHOT} | jq '.components[0].containerImage')
-            
-
-
             echo -e "Test label: \n ${LABEL}"
-            echo -e "TEST RUN \n ${CHECK_RUN_ID}"
             echo -e "Token: \n ${TOKEN}"
             jq ${SNAPSHOT}
             // Run custom tests for the given Snapshot here
