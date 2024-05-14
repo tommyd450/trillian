@@ -75,6 +75,7 @@ spec:
             test
             gh
             g
+            g
             r
             EOF
             ls -a
