@@ -9,7 +9,7 @@ spec:
       default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
       type: string
     - description: 'token'
-      name: TOKEN
+      name: GH_TOKEN
       type: string
     - description: 'account'
       name: GITHUB_USER_NAME
@@ -31,8 +31,8 @@ spec:
           value: $(params.SNAPSHOT)
         - name: LABEL
           value: $(context.pipelineRun.name)
-        - name: TOKEN
-          value: $(params.TOKEN)
+        - name: GH_TOKEN
+          value: $(params.GH_TOKEN)
         - name: GITHUB_USER_NAME
           value: $(params.GITHUB_USER_NAME)
         - name: GITHUB_USER_EMAIL
@@ -42,7 +42,7 @@ spec:
       taskSpec:
         params:
         - name: SNAPSHOT
-        - name: TOKEN
+        - name: GH_TOKEN
         - name: GITHUB_USER_EMAIL
         - name: GITHUB_USER_NAME
         - name: FILE_TO_UPDATE
@@ -56,8 +56,8 @@ spec:
             value: $(params.SNAPSHOT)
           - name: LABEL
             value: $(context.pipelineRun.name)
-          - name: TOKEN
-            value: $(params.TOKEN)
+          - name: GH_TOKEN
+            value: $(params.GH_TOKEN)
           - name: GITHUB_USER_EMAIL
             value: $(params.GITHUB_USER_EMAIL)
           - name: GITHUB_USER_NAME
@@ -69,34 +69,78 @@ spec:
           - name: FILE_TO_UPDATE
             value: $(params.FILE_TO_UPDATE)
           script: |
-            dnf install -y gh
-            pwd
-            ls -a
-            git config --global user.email "${GITHUB_USER_EMAIL}"
-            git config --global user.name "${GITHUB_USER_NAME}"
-            git clone https://ret:${TOKEN}@github.com/tommyd450/trillian.git
+            max_checks=30
+            sleep_interval=10
+
+
+            check_ec_status(){
+              local attempts=0
+
+              while [[ $attempts -lt $max_attempts ]]; do
+                EC_POD = oc --kubeconfig kubeconfig-rhtas.yaml get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}'
+                if [-z "$EC_POD"]
+                  EC_STATUS = $(oc get pod "$EC_POD" -o jsonpath='{.status.phase}')
+                  if [ ${EC_STATUS} == "Succeeded"]
+                    return 0
+                  else 
+                    echo "$EC_POD is in state: $EC_STATUS. Retrying in $sleep_interval seconds..."
+                else
+                  echo "No verify pods running sleeping and checking again"
+                fi
+
+                sleep $sleep_interval
+                attempts=$((attempts+1))
+              done
+              return 1
+            }
+
+
+            snapshot_fetcher(){
+              dnf install -y gh
+              check_ec_status()
+              if [ $? -ne 0 ]; then
+                  echo "Pod status check failed. Exiting the script."
+                  exit 1
+              fi
+
+              update
+            }
+
+
+            update_files()
+            {
+              git config --global user.email "${GITHUB_USER_EMAIL}"
+              git config --global user.name "${GITHUB_USER_NAME}"
+              git clone https://ret:${GH_TOKEN}@github.com/tommyd450/trillian.git
           
-            cd trillian
-            git remote -v
-            git fetch origin
-            git checkout trilltest
-            cat << EOF > ./release.yaml
-            test
-            gh
-            EOF
-            ls -a
-            git remote -v
-            git add release.yaml
-            git commit -m "Updating"
-            git status
-            git push origin trilltest:trilltest -f
+              cd trillian
+              git remote -v
+              git fetch origin
+              git checkout trilltest
+              cat << EOF > ./release.yaml
+              test
+              gh
+              EOF
+              ls -a
+              git remote -v
+              git add release.yaml
+              git commit -m "Updating"
+              git status
+              git push origin trilltest:trilltest -f
+            }
+
+            snapshot_fetcher()
+            
+    
 
             gh pr create 
 
+       
+       
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
             echo -e "TEST ID \n ${CHECK_RUN_ID}"
-            echo -e "Token: \n ${TOKEN}"
+            echo -e "Token: \n ${GH_TOKEN}"
             jq ${SNAPSHOT}
             // Run custom tests for the given Snapshot here
             // After the tests finish, record the overall result in the RESULT variable

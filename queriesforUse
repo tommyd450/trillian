@@ -1,0 +1,3 @@
+EC_POD = oc --kubeconfig kubeconfig-rhtas.yaml get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}'
+
+EC_STATUS = $(oc get pod "$EC_POD" -o jsonpath='{.status.phase}')
