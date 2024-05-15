@@ -1,7 +1,7 @@
 kind: Pipeline
 apiVersion: tekton.dev/v1beta1
 metadata:
-  name: Snapshot-Query
+  name: Snapshot-Query-Combined
 spec:
   params:
     - description: 'Snapshot of the application'
@@ -23,8 +23,55 @@ spec:
       name: FILE_TO_UPDATE
       default: ""
       type: string
+    - name: POLICY_CONFIGURATION
+      type: string
+      description: |
+        Name of the policy configuration (EnterpriseContractConfiguration
+        object) to use. `namespace/name` or `name` syntax supported. If
+        namespace is omitted the namespace where the task runs is used.
+      default: enterprise-contract-service/redhat
+    - name: SSL_CERT_DIR
+      type: string
+      description: |
+        Path to a directory containing SSL certs to be used when communicating
+        with external services. This is useful when using the integrated registry
+        and a local instance of Rekor on a development cluster which may use
+        certificates issued by a not-commonly trusted root CA. In such cases,
+        "/var/run/secrets/kubernetes.io/serviceaccount" is a good value. Multiple
+        paths can be provided by using the ":" separator.
+      default: ""
+  results:
+    - name: TEST_OUTPUT
+      value: "$(tasks.verify.results.TEST_OUTPUT)"
   tasks:
-    - name: task-1
+    - name: verify
+      params:
+        - name: POLICY_CONFIGURATION
+          value: "$(params.POLICY_CONFIGURATION)"
+        - name: IMAGES
+          value: "$(params.SNAPSHOT)"
+        - name: SSL_CERT_DIR
+          value: "$(params.SSL_CERT_DIR)"
+        # It's confusing for users to see a passing taskrun that represents a failing EC test.
+        # For that reason let's have the taskrun fail when there are EC violations. Also, if
+        # this is set to false (IIUC), it's not possible to have the IntegrationTest gate the
+        # deploy to the devel environment work, which is what users expect to be able to do.
+        - name: STRICT
+          value: "true"
+        - name: PUBLIC_KEY
+          value: "k8s://openshift-pipelines/public-key"
+        - name: IGNORE_REKOR
+          value: "true"
+      taskRef:
+        resolver: bundles
+        params:
+          - name: bundle
+            value: quay.io/enterprise-contract/ec-task-bundle:snapshot@sha256:4eb948b679bf8021e13eae44cd331ce9f98fa81d54a36d043b80452057d2efe8
+          - name: name
+            value: verify-enterprise-contract
+          - name: kind
+            value: task
+    - name: Pass-On-Snapshot
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
       params:
         - name: SNAPSHOT
@@ -68,6 +115,8 @@ spec:
                 fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           - name: FILE_TO_UPDATE
             value: $(params.FILE_TO_UPDATE)
+          - name: VERIFY_RESULT
+            value: $(tasks.verify.results.TEST_OUTPUT)
           script: |
             max_checks=30
             sleep_interval=10
@@ -125,6 +174,7 @@ spec:
               update_files
             }
 
+            echo ${VERIFY_RESULT}
             snapshot_fetcher
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
