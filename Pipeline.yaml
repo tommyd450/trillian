@@ -96,11 +96,11 @@ spec:
 
               while [[ $attempts -lt $max_attempts ]]; do
                 EC_POD = oc --kubeconfig kubeconfig-rhtas.yaml get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}'
-                if [-z "$EC_POD"]
+                if [-z "$EC_POD"]; then
                   EC_STATUS = $(oc get pod "$EC_POD" -o jsonpath='{.status.phase}')
-                  if [ ${EC_STATUS} == "Succeeded"]
+                  if [ ${EC_STATUS} == "Succeeded"]; then
                     return 0
-                  else 
+                  else
                     echo "$EC_POD is in state: $EC_STATUS. Retrying in $sleep_interval seconds..."
                 else
                   echo "No verify pods running sleeping and checking again"
