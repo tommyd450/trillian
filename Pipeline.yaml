@@ -94,10 +94,10 @@ spec:
 
             check_ec_status(){
               local attempts=0
-              b=oc get pods
+              b=$(oc get pods)
               echo ${b}
               while [[ $attempts -lt $max_attempts ]]; do
-                EC_POD=oc get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}'
+                EC_POD=$(oc get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}')
                 if [-z "$EC_POD"]; then
                   EC_STATUS=$(oc get pod "$EC_POD" -o jsonpath='{.status.phase}')
                   if [ ${EC_STATUS} == "Succeeded"]; then
