@@ -83,7 +83,7 @@ spec:
               git remote -v
               git fetch origin
               git checkout trilltest
-              cat << EOF > ./release.yaml
+              cat << EOF > ./release2.yaml
               test
               gh
               EOF
