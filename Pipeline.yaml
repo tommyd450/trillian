@@ -102,6 +102,7 @@ spec:
                     return 0
                   else
                     echo "$EC_POD is in state: $EC_STATUS. Retrying in $sleep_interval seconds..."
+                  fi
                 else
                   echo "No verify pods running sleeping and checking again"
                 fi
