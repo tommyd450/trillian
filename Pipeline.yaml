@@ -19,6 +19,10 @@ spec:
       name: GITHUB_USER_EMAIL
       default: ""
       type: string
+    - description: 'file to update'
+      name: FILE_TO_UPDATE
+      default: ""
+      type: string
   tasks:
     - name: task-1
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
@@ -33,12 +37,15 @@ spec:
           value: $(params.GITHUB_USER_NAME)
         - name: GITHUB_USER_EMAIL
           value: $(params.GITHUB_USER_EMAIL)
+        - name: FILE_TO_UPDATE
+          value: $(params.FILE_TO_UPDATE) 
       taskSpec:
         params:
         - name: SNAPSHOT
         - name: TOKEN
         - name: GITHUB_USER_EMAIL
         - name: GITHUB_USER_NAME
+        - name: FILE_TO_UPDATE
         results:
         - name: TEST_OUTPUT
           description: Test output
@@ -59,7 +66,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
+          - name: FILE_TO_UPDATE
+            value: $(params.FILE_TO_UPDATE)
           script: |
+            dnf install -y gh
             pwd
             ls -a
             git config --global user.email "${GITHUB_USER_EMAIL}"
@@ -73,13 +83,6 @@ spec:
             cat << EOF > ./release.yaml
             test
             gh
-            g
-            r
-            g
-            g
-            g
-            g
-            g
             EOF
             ls -a
             git remote -v
@@ -87,6 +90,8 @@ spec:
             git commit -m "Updating"
             git status
             git push origin trilltest:trilltest -f
+
+            gh pr create 
 
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
