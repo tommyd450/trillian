@@ -18,7 +18,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: https://raw.githubusercontent.com/devfile-samples/devfile-sample-go-basic/main/docker/Dockerfile
+    value: Dockerfile.logserver.rh
   - name: git-url
     value: '{{source_url}}'
   - name: output-image
@@ -27,6 +27,12 @@ spec:
     value: .
   - name: revision
     value: '{{revision}}'
+  - name: build-source-image
+    value: true
+  - name: prefetch-input
+    value: '{"type": "gomod", "path": "."}'
+  - name: hermetic
+    value: "true"
   pipelineSpec:
     finally:
     - name: show-sbom
