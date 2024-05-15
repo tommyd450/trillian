@@ -71,7 +71,7 @@ spec:
             value: verify-enterprise-contract
           - name: kind
             value: task
-    - name: Pass-On-Snapshot
+    - name: snapshotter
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
       params:
         - name: SNAPSHOT
