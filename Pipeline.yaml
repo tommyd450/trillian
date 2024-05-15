@@ -116,8 +116,7 @@ spec:
 
 
             snapshot_fetcher(){
-              dnf install -y gh
-              check_ec_status()
+              check_ec_status
               if [ $? -ne 0 ]; then
                   echo "Pod status check failed. Exiting the script."
                   exit 1
