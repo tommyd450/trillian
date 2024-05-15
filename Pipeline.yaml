@@ -124,17 +124,6 @@ spec:
 
               update_files()
             }
-
-
-            
-
-            snapshot_fetcher()
-            
-    
-
-            gh pr create 
-
-       
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
