@@ -94,7 +94,7 @@ spec:
 
             check_ec_status(){
               local attempts=0
-              b=$(oc get pods)
+              b=$(oc get PipelineRun)
               echo ${b}
               while [[ $attempts -lt $max_attempts ]]; do
                 EC_POD=$(oc get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}')
