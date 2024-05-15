@@ -73,6 +73,28 @@ spec:
             sleep_interval=10
 
 
+            update_files()
+            {
+              git config --global user.email "${GITHUB_USER_EMAIL}"
+              git config --global user.name "${GITHUB_USER_NAME}"
+              git clone https://ret:${GH_TOKEN}@github.com/tommyd450/trillian.git
+          
+              cd trillian
+              git remote -v
+              git fetch origin
+              git checkout trilltest
+              cat << EOF > ./release.yaml
+              test
+              gh
+              EOF
+              ls -a
+              git remote -v
+              git add release.yaml
+              git commit -m "Updating"
+              git status
+              git push origin trilltest:trilltest -f
+            }
+
             check_ec_status(){
               local attempts=0
 
@@ -103,31 +125,11 @@ spec:
                   exit 1
               fi
 
-              update
+              update_files()
             }
 
 
-            update_files()
-            {
-              git config --global user.email "${GITHUB_USER_EMAIL}"
-              git config --global user.name "${GITHUB_USER_NAME}"
-              git clone https://ret:${GH_TOKEN}@github.com/tommyd450/trillian.git
-          
-              cd trillian
-              git remote -v
-              git fetch origin
-              git checkout trilltest
-              cat << EOF > ./release.yaml
-              test
-              gh
-              EOF
-              ls -a
-              git remote -v
-              git add release.yaml
-              git commit -m "Updating"
-              git status
-              git push origin trilltest:trilltest -f
-            }
+            
 
             snapshot_fetcher()
             
