@@ -89,6 +89,7 @@ spec:
               git commit -m "Updating"
               git status
               git push origin trilltest:trilltest -f
+              
             }
 
             check_ec_status(){
