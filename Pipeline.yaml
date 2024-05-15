@@ -122,9 +122,10 @@ spec:
                   echo "Pod status check failed. Exiting the script."
                   exit 1
               fi
-
-              update_files()
+              update_files
             }
+
+            snapshot_fetcher
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
