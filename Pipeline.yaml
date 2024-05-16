@@ -89,6 +89,8 @@ spec:
           value: $(params.GITHUB_USER_EMAIL)
         - name: FILE_TO_UPDATE
           value: $(params.FILE_TO_UPDATE) 
+        - name: EC_RESULTS
+          value: $(tasks.verify.results.TEST_OUTPUT)
       taskSpec:
         params:
         - name: SNAPSHOT
@@ -118,7 +120,7 @@ spec:
                 fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/check-run-id']
           - name: FILE_TO_UPDATE
             value: $(params.FILE_TO_UPDATE)
-          - name: VERIFY_RESULT
+          - name: EC_RESULTS
             value: $(tasks.verify.results.TEST_OUTPUT)
           script: |
             max_checks=30
@@ -178,7 +180,7 @@ spec:
               update_files
             }
 
-            echo ${VERIFY_RESULT}
+            echo ${EC_RESULTS}
             snapshot_fetcher
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
