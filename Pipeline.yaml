@@ -134,6 +134,7 @@ spec:
               git fetch origin
               git checkout trilltest
               echo "Updated" >> release.yaml
+              echo "2"
               ls -a
               git remote -v
               git add release.yaml
