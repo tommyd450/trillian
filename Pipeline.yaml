@@ -73,10 +73,9 @@ spec:
             value: verify-enterprise-contract
           - name: kind
             value: task
+  finally:
     - name: snapshotter
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
-      runAfter: 
-        - verify
       params:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
