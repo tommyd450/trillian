@@ -44,7 +44,7 @@ spec:
       default: ""
   results:
     - name: TEST_OUTPUT
-      value: "$(tasks.verify.results.TEST_OUTPUT)"
+      value: $(tasks.verify.results.TEST_OUTPUT)
   tasks:
     - name: verify
       params:
