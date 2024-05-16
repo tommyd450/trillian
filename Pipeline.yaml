@@ -75,6 +75,7 @@ spec:
             value: task
     - name: snapshotter
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
+      runAfter: verify
       params:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
