@@ -99,9 +99,6 @@ spec:
         - name: GITHUB_USER_NAME
         - name: FILE_TO_UPDATE
         - name: EC_RESULTS
-        results:
-        - name: TEST_OUTPUT
-          description: Test output
         steps:
         - image: registry.redhat.io/openshift4/ose-cli@sha256:4257542c6e7343abd048f8b1c1e06afeed8d4e4bfafe8621fcfa32b92c77b644
           env:
