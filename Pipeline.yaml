@@ -181,7 +181,7 @@ spec:
               update_files
             }
 
-            echo ${EC_RESULTS}
+            echo "${EC_RESULTS}"
             snapshot_fetcher
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
