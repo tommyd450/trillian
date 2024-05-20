@@ -70,15 +70,10 @@ spec:
             value: verify-enterprise-contract
           - name: kind
             value: task
-      taskSpec:
-        results:
+      results:
         - name: TEST_OUTPUT
-          value: $(tasks.verify.results.TEST_OUTPUT)
-        steps:
-        - image: registry.redhat.io/openshift4/ose-cli@sha256:4257542c6e7343abd048f8b1c1e06afeed8d4e4bfafe8621fcfa32b92c77b644
-          script: |
-            echo -e ${TEST_OUTPUT}
-            echo -e ${TEST_OUTPUT} >> /workspace/results.txt
+          desc: test
+      
   finally:
     - name: snapshotter
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
@@ -155,41 +150,10 @@ spec:
 
             }
 
-            check_ec_status(){
-              local attempts=0
-              b=$(oc get snapshots)
-              echo ${b}
-              while [[ $attempts -lt $max_attempts ]]; do
-                EC_POD=$(oc get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}')
-                if [-z "$EC_POD"]; then
-                  EC_STATUS=$(oc get pod "$EC_POD" -o jsonpath='{.status.phase}')
-                  if [ ${EC_STATUS} == "Succeeded"]; then
-                    return 0
-                  else
-                    echo "$EC_POD is in state: $EC_STATUS. Retrying in $sleep_interval seconds..."
-                  fi
-                else
-                  echo "No verify pods running sleeping and checking again"
-                fi
-
-                sleep ${sleep_interval}
-                attempts=$((attempts+1))
-              done
-              return 1
-            }
-
-
-            snapshot_fetcher(){
-              check_ec_status
-              if [ $? -ne 0 ]; then
-                  echo "Pod status check failed. Exiting the script."
-                  exit 1
-              fi
-              update_files
-            }
+            
 
             echo "${SNAPSHOT}"
-            snapshot_fetcher
+            update_files
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
             echo -e "Test label: \n ${LABEL}"
