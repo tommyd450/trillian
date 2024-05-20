@@ -1,3 +1,7 @@
 EC_POD = oc --kubeconfig kubeconfig-rhtas.yaml get pods -l pac.test.appstudio.openshift.io/check-run-id=${CHECK_RUN_ID} | awk '{if (($3 ~ "Completed")&&($1 ~ "verify-pod")) print $1}'
 
 EC_STATUS = $(oc get pod "$EC_POD" -o jsonpath='{.status.phase}')
+
+echo "{"application":"trillian-2","components":[{"name":"trillian","containerImage":"quay.io/redhat-user-workloads/tdalton-tenant/trillian-2/trillian@sha256:81c6e427381b41cf529a7354a2f91925aef62e31f1cf922eadb50e3dc5df1af2","source":{"git":{"url":"https://github.com/tommyd450/trillian","revision":"28b6a8feb8e057cc7ce2a3f6723ee0accb661cf9"}}}],"artifacts":{}}'" | jq '.cli.cosign.Digest |= "test"' quay-coordinates.json 
+
+echo "{"application":"trillian-2","components":[{"name":"trillian","containerImage":"quay.io/redhat-user-workloads/tdalton-tenant/trillian-2/trillian@sha256:81c6e427381b41cf529a7354a2f91925aef62e31f1cf922eadb50e3dc5df1af2","source":{"git":{"url":"https://github.com/tommyd450/trillian","revision":"28b6a8feb8e057cc7ce2a3f6723ee0accb661cf9"}}}],"artifacts":{}}'"
