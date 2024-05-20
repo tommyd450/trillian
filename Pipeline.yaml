@@ -42,9 +42,6 @@ spec:
         "/var/run/secrets/kubernetes.io/serviceaccount" is a good value. Multiple
         paths can be provided by using the ":" separator.
       default: ""
-  results:
-    - name: TEST_OUTPUT
-      value: $(tasks.verify.results.TEST_OUTPUT)
   tasks:
     - name: verify
       params:
@@ -73,7 +70,11 @@ spec:
             value: verify-enterprise-contract
           - name: kind
             value: task
-      steps:
+      taskSpec:
+        results:
+        - name: TEST_OUTPUT
+          value: $(tasks.verify.results.TEST_OUTPUT)
+        steps:
         - image: registry.redhat.io/openshift4/ose-cli@sha256:4257542c6e7343abd048f8b1c1e06afeed8d4e4bfafe8621fcfa32b92c77b644
           script: |
             echo -e ${TEST_OUTPUT}
