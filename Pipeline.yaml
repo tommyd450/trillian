@@ -42,6 +42,9 @@ spec:
         "/var/run/secrets/kubernetes.io/serviceaccount" is a good value. Multiple
         paths can be provided by using the ":" separator.
       default: ""
+    - name: EC_RESULTS
+      type: string
+      default: "Empty"
   tasks:
     - name: verify
       params:
@@ -125,7 +128,7 @@ spec:
           - name: EC_RESULTS
             value: $(tasks.verify.results.TEST_OUTPUT)
           script: |
-            echo "${EC_RESULTS}" | 
+            echo "${EC_RESULTS}"
             max_checks=30
             sleep_interval=10
 
@@ -152,7 +155,7 @@ spec:
 
             
 
-            echo "${SNAPSHOT}"
+            echo "${EC_RESULTS}"
             update_files
        
             echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
