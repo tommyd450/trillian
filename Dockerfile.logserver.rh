@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/go-toolset@sha256:ace149b17c62803c8a4d3ecfbc0c17dd9a4242ea3f0a6f14a4578474e34c3c3e AS builder
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:6e199b7101e258e5c30124ede22f442de560b09e1b251dd3de32d4f45b9e15af AS builder
 ENV APP_ROOT=/opt/app-root
 ENV GOPATH=$APP_ROOT
 ENV CGO_ENABLED=false
