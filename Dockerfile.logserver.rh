@@ -15,7 +15,7 @@ ADD ./ $APP_ROOT/src/
 RUN go build -v ./cmd/trillian_log_server
 
 # Multi-Stage production build
-FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:119ac25920c8bb50c8b5fd75dcbca369bf7d1f702b82f3d39663307890f0bf26 AS deploy
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:82fad27b91361473d919522a01a1198f327230bf8d2b569a8995bdcd6ac7cb94 AS deploy
 
 # Retrieve the binary from the previous stage
 COPY --from=builder /opt/app-root/src/trillian_log_server /
