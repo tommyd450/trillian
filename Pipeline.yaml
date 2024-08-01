@@ -4,41 +4,79 @@ metadata:
   name: Snapshot-Query
 spec:
   params:
-    - description: 'Snapshot of the application'
-      name: SNAPSHOT
+    - name: SNAPSHOT
       default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
       type: string
+    - name: git_repo
+      type: string
+    - name: revision
+      type: string
+    - name: github_secret_name
+      type: string
+    - name: github_secret_token
+      type: string
+    - name: releaseVersion
+      type: string
+  workspaces:
+    - name: release-workspace
   tasks:
-    - name: task-1
+    - name: Snapshot Stitcher
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
       params:
         - name: SNAPSHOT
-          value: $(params.SNAPSHOT)
+          value: "$(params.SNAPSHOT)"
         - name: LABEL
-          value: $(context.pipelineRun.name)
+          value: "$(context.pipelineRun.name)"
+        - name: GIT_REPO
+          value: "$(params.git_repo)"
+        - name: GIT_SECRET_NAME
+          value: "$(params.git_secret_name)"
+        - name: GIT_SECRET_TOKEN
+          value: "$(params.git_secret_token)"
+        - name: RELEASEVERSION
+          value: "$(params.releaseVersion)"
       taskSpec:
         params:
-        - name: SNAPSHOT
-        results:
-        - name: TEST_OUTPUT
-          description: Test output
-        steps:
-        - image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
-          env:
           - name: SNAPSHOT
             value: $(params.SNAPSHOT)
           - name: LABEL
             value: $(context.pipelineRun.name)
+          - name: GIT_REPO
+            value: $(params.git_repo)
+          - name: GIT_SECRET_NAME
+            value: $(params.git_secret_name)
+          - name: GIT_SECRET_TOKEN
+            value: $(params.git_secret_token)
+          - name: RELEASEVERSION
+            value: $(params.releaseVersion)
+        steps:
+        - image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
+          env:
+            - name: access-token
+              valueFrom:
+                secretKeyREf:
+                  name: $(params.GIT_SECRET_NAME)
           script: |
             dnf -y install jq
+            dnf -y install gh
+            dnf -y install sed
 
-            echo -e "Example test task for the Snapshot:\n ${SNAPSHOT}"
-            echo -e "Test label: \n ${LABEL}"
-            // Run custom tests for the given Snapshot here
-            // After the tests finish, record the overall result in the RESULT variable
-            RESULT="$LABEL"
+            git config --global user.email "tdalton@redhat.com"
+            git config --global user.name "Data"
+            git clone https://ret:${GH_TOKEN}@github.com/tommyd450/trillian.git
+            cd release
+            git remote -v
+            git fetch origin
+            git checkout test
+            echo "Updated" >> release.yaml
+            echo "2"
+            ls -a
+            git remote -v
+            git add release.yaml
 
-            // Output the standardized TEST_OUTPUT result in JSON form
-            TEST_OUTPUT=$(jq -rc --arg date $(date +%s) --arg RESULT "${RESULT}" --null-input \
-              '{result: $RESULT, timestamp: $date, failures: 0, successes: 1, warnings: 0}')
-            echo -n "${TEST_OUTPUT}" | tee $(results.TEST_OUTPUT.path)
+            git commit -m "Updating"
+
+            git status
+
+            git push origin trilltest:trilltest
+            

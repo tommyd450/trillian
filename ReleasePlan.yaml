@@ -1,0 +1,28 @@
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ReleasePlan
+metadata:
+  labels:
+    release.appstudio.openshift.io/auto-release: "false"
+    release.appstudio.openshift.io/releasePlanAdmission: 'test'
+  name: trillian
+  namespace: rhtas-tenant
+spec:
+  pipeline:
+    pipelineRef:
+      params:
+        - name: url
+          value: https://github.com/tommyd450/trillian.git
+        - name: revision
+          value: trilltest
+        - name: pathInRepo
+          value: Pipeline.yaml
+      resolver: "git"
+    serviceAccountName: appstudio-pipeline
+    params:
+      - name: releaseVersion
+        value: "1.0.4"
+      - name: git_repo
+        value: "https://github.com/securesign/releases"
+      - name: github_secret_name
+        value: release-pr-access
+  application:
