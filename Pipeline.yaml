@@ -28,9 +28,9 @@ spec:
         - name: GIT_REPO
           value: "$(params.git_repo)"
         - name: GIT_SECRET_NAME
-          value: "$(params.git_secret_name)"
+          value: "$(params.github_secret_name)"
         - name: GIT_SECRET_TOKEN
-          value: "$(params.git_secret_token)"
+          value: "$(params.github_secret_token)"
         - name: RELEASEVERSION
           value: "$(params.releaseVersion)"
       taskSpec:
