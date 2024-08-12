@@ -1,0 +1,8 @@
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Release
+metadata:
+  name: test-release
+  namespace: rhtas-tenant
+spec:
+  releasePlan: test-rpa
+  snapshot: trillian-lwlch
