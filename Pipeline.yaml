@@ -96,9 +96,9 @@ spec:
               create_directory_structure
 
               cd "$(pwd)/$(params.RELEASEVERSION)"
-              readarray components < <(oc get snapshot ${SNAPSHOT} -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
+              readarray components < <(oc get snapshot $(params.SNAPSHOT##*/) -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
               echo ${components}
-              APP_NAME=$(oc get snapshot ${SNAPSHOT} -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
+              APP_NAME=$(oc get snapshot $(params.SNAPSHOT##*/) -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
               prod_path="$(pwd)/quay-coordinates.json"
               tmp_path="$(pwd)/quay-tmp-coordinates.json"
               day=$(date +'%Y-%m-%d')
