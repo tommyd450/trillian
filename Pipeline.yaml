@@ -5,6 +5,8 @@ metadata:
   name: Snapshot-Query
 spec:
   params:
+    - name: snapshot
+      type: string
     - name: git_repo
       type: string
     - name: github_secret_name
@@ -21,6 +23,8 @@ spec:
       workspaces:
         - name: release-workspace
       params:
+        - name: SNAPSHOT
+          value: "$(params.snapshot)"
         - name: GIT_REPO
           value: "$(params.git_repo)"
         - name: GIT_SECRET_NAME
