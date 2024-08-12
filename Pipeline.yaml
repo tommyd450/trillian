@@ -4,7 +4,7 @@ metadata:
   name: Snapshot-Query
 spec:
   params:
-    - name: SNAPSHOT
+    - name: snapshot
       default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
       type: string
     - name: git_repo
@@ -40,17 +40,15 @@ spec:
       taskSpec:
         params:
           - name: SNAPSHOT
-            value: $(params.snapshot)
-          - name: LABEL
-            value: $(context.pipelineRun.name)
+            value: $(params.SNAPSHOT)
           - name: GIT_REPO
-            value: $(params.git_repo)
+            value: $(params.GIT_REPO)
           - name: GIT_SECRET_NAME
-            value: $(params.git_secret_name)
+            value: $(params.GIT_SECRET_NAME)
           - name: GIT_SECRET_TOKEN
-            value: $(params.git_secret_token)
+            value: $(params.GIT_SECRET_TOKEN)
           - name: RELEASEVERSION
-            value: $(params.releaseVersion)
+            value: $(params.RELEASEVERSION)
         steps:
         - image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
           env:
