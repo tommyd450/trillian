@@ -48,7 +48,7 @@ spec:
         steps:
         
           - name: teststep
-            image: "quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
+            image: "registry.redhat.io/openshift4/ose-cli-rhel9@sha256:da73326271164f5581db65ce760c03896980243a55079d0036f044e6fa3d960e"
             env:
               - name: GIT_TOKEN
                 valueFrom:
