@@ -61,7 +61,9 @@ spec:
               dnf -y install sed
 
               echo $(params.SNAPSHOT)
-              SNAPSHOTID=$(params.SNAPSHOT##*/)
+              SNAPSHOTID=$(echo ${params.SNAPSHOT})
+              snapshotid=$(echo ${SNAPSHOTID##*/})
+
               fetch_and_config_repo(){
                 git config --global user.email "tdalton@redhat.com"
                 git config --global user.name "Release-Coordinator-Bot"
@@ -97,9 +99,9 @@ spec:
               create_directory_structure
 
               cd "$(pwd)/$(params.RELEASEVERSION)"
-              readarray components < <(oc get snapshot ${SNAPSHOT} -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
+              readarray components < <(oc get snapshot ${snapshotid} -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
               echo ${components}
-              APP_NAME=$(oc get snapshot ${SNAPSHOT} -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
+              APP_NAME=$(oc get snapshot ${snapshotid} -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
               prod_path="$(pwd)/quay-coordinates.json"
               tmp_path="$(pwd)/quay-tmp-coordinates.json"
               day=$(date +'%Y-%m-%d')
