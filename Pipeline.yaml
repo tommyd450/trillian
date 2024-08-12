@@ -47,7 +47,7 @@ spec:
               - name: GIT_SECRET_TOKEN
                 value: $(params.GIT_SECRET_TOKEN)
               - name: RELEASEVERSION
-                value: $(params.releaseVersion)
+                value: $(params.RELEASEVERSION)
             env:
               - name: GIT_TOKEN
                 valueFrom:
