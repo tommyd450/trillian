@@ -16,139 +16,139 @@ spec:
   workspaces:
     - name: release-workspace
   tasks:
-    - name: snapshottest
-      description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
-      workspaces:
-        - name: release-workspace
-      params:
-        - name: GIT_REPO
-          value: "$(params.git_repo)"
-        - name: GIT_SECRET_NAME
-          value: "$(params.git_secret_name)"
-        - name: GIT_SECRET_TOKEN
-          value: "$(params.git_secret_token)"
-        - name: RELEASEVERSION
-          value: "$(params.releaseVersion)"
-      steps:
-        - name: teststep
-          image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
-          params:
-            - name: SNAPSHOT
-              value: $(params.SNAPSHOT)
-            - name: GIT_REPO
-              value: $(params.GIT_REPO)
-            - name: GIT_SECRET_NAME
-              value: $(params.GIT_SECRET_NAME)
-            - name: GIT_SECRET_TOKEN
-              value: $(params.GIT_SECRET_TOKEN)
-            - name: RELEASEVERSION
-              value: $(params.releaseVersion)
-          env:
-            - name: GIT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: $(params.GIT_SECRET_NAME)
-                  key: $(params.GIT_SECRET_TOKEN)
-          script: |
-            dnf -y install jq
-            dnf -y install gh
-            dnf -y install sed
+  - name: snapshottest
+    description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
+    workspaces:
+      - name: release-workspace
+    params:
+      - name: GIT_REPO
+        value: "$(params.git_repo)"
+      - name: GIT_SECRET_NAME
+        value: "$(params.git_secret_name)"
+      - name: GIT_SECRET_TOKEN
+        value: "$(params.git_secret_token)"
+      - name: RELEASEVERSION
+        value: "$(params.releaseVersion)"
+    steps:
+      - name: teststep
+        image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
+        params:
+          - name: SNAPSHOT
+            value: $(params.SNAPSHOT)
+          - name: GIT_REPO
+            value: $(params.GIT_REPO)
+          - name: GIT_SECRET_NAME
+            value: $(params.GIT_SECRET_NAME)
+          - name: GIT_SECRET_TOKEN
+            value: $(params.GIT_SECRET_TOKEN)
+          - name: RELEASEVERSION
+            value: $(params.releaseVersion)
+        env:
+          - name: GIT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: $(params.GIT_SECRET_NAME)
+                key: $(params.GIT_SECRET_TOKEN)
+        script: |
+          dnf -y install jq
+          dnf -y install gh
+          dnf -y install sed
 
-            echo $(params.SNAPSHOT)
-            fetch_and_config_repo(){
-              git config --global user.email "tdalton@redhat.com"
-              git config --global user.name "Release-Coordinator-Bot"
-              git clone https://REB:${GIT_TOKEN}@github.com/securesign/releases.git
-              cd releases
-              git fetch origin
-              if [ `git branch --list $(params.RELEASEVERSION)` ]; then
-                git checkout $(params.RELEASEVERSION)
-              else
-                git checkout -b $(params.RELEASEVERSION)
-              fi
-            }
-
-            ## This function will generate the folder structure for the specific release.
-            create_directory_structure(){
-                echo "Attempting to create Directory Strcuture"
-                if [ -d "$(pwd)/$(params.RELEASEVERSION)" ]; then
-                    echo "Directory Structure already exists skipping."
-                else
-                    mkdir "$(pwd)/$(params.RELEASEVERSION)" "$(pwd)/$(params.RELEASEVERSION)/releasePlans" \
-                    "$(pwd)/$(params.RELEASEVERSION)/releases" "$(pwd)/$(params.RELEASEVERSION)/testingResources"
-                fi
-
-                if [ -f "$(pwd)/$(params.RELEASEVERSION))/quay-coordinates.json" ]; then
-                echo "Quay Coordinate File Exists"
-                else
-                    echo "Creating Quay Coordinate File"
-                    echo "{}" >> "$(pwd)/$(paramas.RELEASEVERSION)/quay-coordinates.json"
-                fi
-            }
-
-            fetch_and_config_repo
-            create_directory_structure
-
-            cd "$(pwd)/$(params.RELEASEVERSION)"
-            readarray components < <(oc get snapshot ${SNAPSHOT} -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
-            echo ${components}
-            APP_NAME=$(oc get snapshot ${SNAPSHOT} -o json | jq '.spec.application' | cut -d "\"" -f 2)
-            prod_path="$(pwd)/quay-coordinates.json"
-            tmp_path="$(pwd)/quay-tmp-coordinates.json"
-            day=$(date +'%Y-%m-%d')
-            current_time=$(date +'%H-%M-%S')
-
-            jq_update_file() {
-                if [[ $? != 0 ]]; then
-                    echo "jq could not parse file" 
-                    exit $?
-                fi
-                echo "Update"
-                mv $tmp_path $prod_path
-            }
-
-            ## This will Genereate the Json Entries within the quay-coordinates.json file.
-            ## Code taken from our helper scripts repo 
-            generate_components() {
-                echo "${APP_NAME} does not exist within the coordinates file adding entry to the coordinates file"
-                echo ${APP_NAME}
-                jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME "$(params.SNAPSHOT)" '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
-                jq_update_file
-                component_names=($(kubectl get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
-                component_images=($(kubectl get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
-
-                for index in "${!component_names[@]}"; do 
-                    if [[ $logging == 0 ]]; then
-                        echo "${component_names[$index]}: ${component_images[$index]}"
-                    fi
-                    tmp_component_name=${component_names[$index]}
-                    tmp_component_image=${component_images[$index]}
-                    jq --arg APPLICATION_NAME "${APP_NAME}" --arg COMPONENT_NAME "$tmp_component_name" --arg COMPONENT_IMAGE "$tmp_component_image" '.[($APPLICATION_NAME)][($COMPONENT_NAME)]=($COMPONENT_IMAGE)' $prod_path > $tmp_path  
-                    jq_update_file
-                    
-                done
-            }
-
-            regex_sha_updater() {
-                printf "The ${APP_NAME} app does exist within the coordinates file,\nUpdating file with Image from $(params.SNAPSHOT).\n\n"
-                for c in ${components[@]}
-                do
-                    imageAddress=$(echo ${c} | grep -o '^[^@]*')
-                    imageDigest=$(echo ${c})
-                    sed -i --regexp-extended "s|${imageAddress}(.*)\"|${imageDigest}\"|g" quay-coordinates.json
-                done
-            }
-
-            APPEXISTS=$(jq -r  '.|has("${APP_NAME}")' quay-coordinates.json)
-
-            if [[ ${APPEXISTS} == true ]] ;then
-                regex_sha_updater
-
-            elif [[ ${APPEXISTS} == false ]] ;then
-                generate_components
+          echo $(params.SNAPSHOT)
+          fetch_and_config_repo(){
+            git config --global user.email "tdalton@redhat.com"
+            git config --global user.name "Release-Coordinator-Bot"
+            git clone https://REB:${GIT_TOKEN}@github.com/securesign/releases.git
+            cd releases
+            git fetch origin
+            if [ `git branch --list $(params.RELEASEVERSION)` ]; then
+              git checkout $(params.RELEASEVERSION)
+            else
+              git checkout -b $(params.RELEASEVERSION)
             fi
+          }
 
-            git add .
-            git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
-            git push origin $(params.RELEASEVERSION):$(params.RELEASEVERSION)
-            
+          ## This function will generate the folder structure for the specific release.
+          create_directory_structure(){
+              echo "Attempting to create Directory Strcuture"
+              if [ -d "$(pwd)/$(params.RELEASEVERSION)" ]; then
+                  echo "Directory Structure already exists skipping."
+              else
+                  mkdir "$(pwd)/$(params.RELEASEVERSION)" "$(pwd)/$(params.RELEASEVERSION)/releasePlans" \
+                  "$(pwd)/$(params.RELEASEVERSION)/releases" "$(pwd)/$(params.RELEASEVERSION)/testingResources"
+              fi
+
+              if [ -f "$(pwd)/$(params.RELEASEVERSION))/quay-coordinates.json" ]; then
+              echo "Quay Coordinate File Exists"
+              else
+                  echo "Creating Quay Coordinate File"
+                  echo "{}" >> "$(pwd)/$(paramas.RELEASEVERSION)/quay-coordinates.json"
+              fi
+          }
+
+          fetch_and_config_repo
+          create_directory_structure
+
+          cd "$(pwd)/$(params.RELEASEVERSION)"
+          readarray components < <(oc get snapshot ${SNAPSHOT} -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
+          echo ${components}
+          APP_NAME=$(oc get snapshot ${SNAPSHOT} -o json | jq '.spec.application' | cut -d "\"" -f 2)
+          prod_path="$(pwd)/quay-coordinates.json"
+          tmp_path="$(pwd)/quay-tmp-coordinates.json"
+          day=$(date +'%Y-%m-%d')
+          current_time=$(date +'%H-%M-%S')
+
+          jq_update_file() {
+              if [[ $? != 0 ]]; then
+                  echo "jq could not parse file" 
+                  exit $?
+              fi
+              echo "Update"
+              mv $tmp_path $prod_path
+          }
+
+          ## This will Genereate the Json Entries within the quay-coordinates.json file.
+          ## Code taken from our helper scripts repo 
+          generate_components() {
+              echo "${APP_NAME} does not exist within the coordinates file adding entry to the coordinates file"
+              echo ${APP_NAME}
+              jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME "$(params.SNAPSHOT)" '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
+              jq_update_file
+              component_names=($(kubectl get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
+              component_images=($(kubectl get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
+
+              for index in "${!component_names[@]}"; do 
+                  if [[ $logging == 0 ]]; then
+                      echo "${component_names[$index]}: ${component_images[$index]}"
+                  fi
+                  tmp_component_name=${component_names[$index]}
+                  tmp_component_image=${component_images[$index]}
+                  jq --arg APPLICATION_NAME "${APP_NAME}" --arg COMPONENT_NAME "$tmp_component_name" --arg COMPONENT_IMAGE "$tmp_component_image" '.[($APPLICATION_NAME)][($COMPONENT_NAME)]=($COMPONENT_IMAGE)' $prod_path > $tmp_path  
+                  jq_update_file
+                  
+              done
+          }
+
+          regex_sha_updater() {
+              printf "The ${APP_NAME} app does exist within the coordinates file,\nUpdating file with Image from $(params.SNAPSHOT).\n\n"
+              for c in ${components[@]}
+              do
+                  imageAddress=$(echo ${c} | grep -o '^[^@]*')
+                  imageDigest=$(echo ${c})
+                  sed -i --regexp-extended "s|${imageAddress}(.*)\"|${imageDigest}\"|g" quay-coordinates.json
+              done
+          }
+
+          APPEXISTS=$(jq -r  '.|has("${APP_NAME}")' quay-coordinates.json)
+
+          if [[ ${APPEXISTS} == true ]] ;then
+              regex_sha_updater
+
+          elif [[ ${APPEXISTS} == false ]] ;then
+              generate_components
+          fi
+
+          git add .
+          git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
+          git push origin $(params.RELEASEVERSION):$(params.RELEASEVERSION)
+          
