@@ -16,7 +16,7 @@ spec:
   workspaces:
     - name: release-workspace
   tasks:
-    - name: Snapshot-stitcher
+    - name: snapshottest
       description: Placeholder task that prints the Snapshot and outputs standard TEST_OUTPUT
       workspaces:
         - name: release-workspace
