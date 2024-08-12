@@ -32,17 +32,6 @@ spec:
       taskSpec:
         workspaces:
           - name: data
-        params:
-          - name: SNAPSHOT
-            value: $(params.SNAPSHOT)
-          - name: GIT_REPO
-            value: $(params.GIT_REPO)
-          - name: GIT_SECRET_NAME
-            value: $(params.GIT_SECRET_NAME)
-          - name: GIT_SECRET_TOKEN
-            value: $(params.GIT_SECRET_TOKEN)
-          - name: RELEASEVERSION
-            value: $(params.releaseVersion)
         steps:
           - image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
             env:
@@ -51,6 +40,17 @@ spec:
                   secretKeyRef:
                     name: $(params.GIT_SECRET_NAME)
                     key: $(params.GIT_SECRET_TOKEN)
+            params:
+              - name: SNAPSHOT
+                value: $(params.SNAPSHOT)
+              - name: GIT_REPO
+                value: $(params.GIT_REPO)
+              - name: GIT_SECRET_NAME
+                value: $(params.GIT_SECRET_NAME)
+              - name: GIT_SECRET_TOKEN
+                value: $(params.GIT_SECRET_TOKEN)
+              - name: RELEASEVERSION
+                value: $(params.releaseVersion)
             script: |
               dnf -y install jq
               dnf -y install gh
