@@ -34,20 +34,20 @@ spec:
         - name: RELEASEVERSION
           value: "$(params.releaseVersion)"
       taskSpec:
+        params:
+          - name: SNAPSHOT
+            type: string
+          - name: GIT_REPO
+            type: string
+          - name: GIT_SECRET_NAME
+            type: string
+          - name: GIT_SECRET_TOKEN
+            type: string
+          - name: RELEASEVERSION
+            type: string
         steps:
           - name: teststep
             image: quay.io/hacbs-release/cloud-builders-kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753"
-            params:
-              - name: SNAPSHOT
-                value: $(params.SNAPSHOT)
-              - name: GIT_REPO
-                value: $(params.GIT_REPO)
-              - name: GIT_SECRET_NAME
-                value: $(params.GIT_SECRET_NAME)
-              - name: GIT_SECRET_TOKEN
-                value: $(params.GIT_SECRET_TOKEN)
-              - name: RELEASEVERSION
-                value: $(params.RELEASEVERSION)
             env:
               - name: GIT_TOKEN
                 valueFrom:
@@ -157,4 +157,3 @@ spec:
               git add .
               git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
               git push origin $(params.RELEASEVERSION):$(params.RELEASEVERSION)
-              
