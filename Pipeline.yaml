@@ -51,6 +51,7 @@ spec:
                     name: $(params.GIT_SECRET_NAME)
                     key: $(params.GIT_SECRET_TOKEN)
             script: |
+              #!/usr/bin/env sh
               dnf -y install jq
               dnf -y install gh
               dnf -y install sed
