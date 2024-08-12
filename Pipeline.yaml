@@ -61,6 +61,7 @@ spec:
               dnf -y install sed
 
               echo $(params.SNAPSHOT)
+              SNAPSHOTID=$(params.SNAPSHOT##*/)
               fetch_and_config_repo(){
                 git config --global user.email "tdalton@redhat.com"
                 git config --global user.name "Release-Coordinator-Bot"
