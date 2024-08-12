@@ -46,7 +46,6 @@ spec:
           - name: RELEASEVERSION
             type: string
         steps:
-        
           - name: teststep
             image: "registry.redhat.io/openshift4/ose-cli-rhel9@sha256:da73326271164f5581db65ce760c03896980243a55079d0036f044e6fa3d960e"
             env:
@@ -97,9 +96,9 @@ spec:
               create_directory_structure
 
               cd "$(pwd)/$(params.RELEASEVERSION)"
-              readarray components < <(oc get snapshot ${SNAPSHOT} -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
+              readarray components < <(oc get snapshot ${SNAPSHOT} -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
               echo ${components}
-              APP_NAME=$(oc get snapshot ${SNAPSHOT} -o json | jq '.spec.application' | cut -d "\"" -f 2)
+              APP_NAME=$(oc get snapshot ${SNAPSHOT} -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
               prod_path="$(pwd)/quay-coordinates.json"
               tmp_path="$(pwd)/quay-tmp-coordinates.json"
               day=$(date +'%Y-%m-%d')
