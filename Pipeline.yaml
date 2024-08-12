@@ -64,25 +64,27 @@ spec:
             dnf -y install gh
             dnf -y install sed
 
-            echo $(params.)
+            echo $(params.SNAPSHOT)
+            fetch_and_config_repo(){
+              git config --global user.email "tdalton@redhat.com"
+              git config --global user.name "Release-Coordinator-Bot"
+              git clone https://REB:${GIT_TOKEN}@github.com/securesign/releases.git
+              cd releases
+              git fetch origin
+              if [ `git branch --list $(params.RELEASEVERSION)` ]; then
+                git checkout $(params.RELEASEVERSION)
+              else
+                git checkout -b $(params.RELEASEVERSION)
+              fi
+            }
 
-            git config --global user.email "tdalton@redhat.com"
-            git config --global user.name "Release-Coordinator-Bot"
-            git clone https://ret:${GIT_TOKEN}@github.com/securesign/releases.git
-            cd releases
-            git fetch origin
-            if [ `git branch --list $(params.RELEASEVERSION)` ]; then
-              git checkout $(params.RELEASEVERSION)
-            else
-              git checkout -b $(params.RELEASEVERSION)
-            fi
-
+            ## This function will generate the folder structure for the specific release.
             create_directory_structure(){
                 echo "Attempting to create Directory Strcuture"
                 if [ -d "$(pwd)/$(params.RELEASEVERSION)" ]; then
                     echo "Directory Structure already exists skipping."
                 else
-                    mkdir "$(pwd)/$(params.RELEASEVERSION)" "$(pwd)/$(params.RELEASEVERSIONS/releasePlans" \
+                    mkdir "$(pwd)/$(params.RELEASEVERSION)" "$(pwd)/$(params.RELEASEVERSION)/releasePlans" \
                     "$(pwd)/$(params.RELEASEVERSION)/releases" "$(pwd)/$(params.RELEASEVERSION)/testingResources"
                 fi
 
@@ -94,11 +96,10 @@ spec:
                 fi
             }
 
-
+            fetch_and_config_repo
             create_directory_structure
 
             cd "$(pwd)/$(params.RELEASEVERSION)"
-
             readarray components < <(oc get snapshot ${SNAPSHOT} -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
             echo ${components}
             APP_NAME=$(oc get snapshot ${SNAPSHOT} -o json | jq '.spec.application' | cut -d "\"" -f 2)
@@ -148,20 +149,16 @@ spec:
                 done
             }
 
-
             APPEXISTS=$(jq -r  '.|has("${APP_NAME}")' quay-coordinates.json)
-            echo ${APPEXISTS}
 
             if [[ ${APPEXISTS} == true ]] ;then
                 regex_sha_updater
 
             elif [[ ${APPEXISTS} == false ]] ;then
                 generate_components
-
             fi
 
             git add .
             git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
-            git push origin $(params.RELEASEVERSION)
-
+            git push origin $(params.RELEASEVERSION):$(params.RELEASEVERSION)
             
