@@ -4,12 +4,7 @@ metadata:
   name: Snapshot-Query
 spec:
   params:
-    - name: snapshot
-      default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
-      type: string
     - name: git_repo
-      type: string
-    - name: revision
       type: string
     - name: github_secret_name
       type: string
@@ -25,8 +20,6 @@ spec:
       workspaces:
         - name: release-workspace
       params:
-        - name: SNAPSHOT
-          value: "$(params.snapshot)"
         - name: GIT_REPO
           value: "$(params.git_repo)"
         - name: GIT_SECRET_NAME
