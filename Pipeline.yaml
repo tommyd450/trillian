@@ -27,8 +27,6 @@ spec:
       params:
         - name: SNAPSHOT
           value: "$(params.snapshot)"
-        - name: LABEL
-          value: "$(context.pipelineRun.name)"
         - name: GIT_REPO
           value: "$(params.git_repo)"
         - name: GIT_SECRET_NAME
