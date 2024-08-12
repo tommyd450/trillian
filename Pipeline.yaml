@@ -61,7 +61,7 @@ spec:
               dnf -y install sed
 
               echo $(params.SNAPSHOT)
-              SNAPSHOTID=$(echo ${params.SNAPSHOT})
+              SNAPSHOTID=$(echo $(params.SNAPSHOT))
               snapshotid=$(echo ${SNAPSHOTID##*/})
 
               fetch_and_config_repo(){
