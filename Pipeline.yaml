@@ -160,4 +160,4 @@ spec:
 
               git add .
               git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
-              git push origin $(params.RELEASEVERSION):$(params.RELEASEVERSION)
+              git push origin $(params.RELEASEVERSION)
