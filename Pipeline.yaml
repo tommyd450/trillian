@@ -163,4 +163,4 @@ spec:
               git remote -v
               git add .
               git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
-              git push origin $(params.RELEASEVERSION)
+              git push origin $(params.RELEASEVERSION):$(params.RELEASEVERSION)
