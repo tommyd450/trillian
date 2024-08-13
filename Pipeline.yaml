@@ -74,8 +74,10 @@ spec:
                 git fetch origin
                 if [ `git branch --list $(params.RELEASEVERSION)` ]; then
                   git checkout $(params.RELEASEVERSION)
+                  git pull origin $(params.RELEASEVERSION)
                 else
                   git checkout -b $(params.RELEASEVERSION)
+                  git pull origin $(params.RELEASEVERSION)
                 fi
               }
 
