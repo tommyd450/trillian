@@ -92,7 +92,7 @@ spec:
                   echo "Quay Coordinate File Exists"
                   else
                       echo "Creating Quay Coordinate File"
-                      echo "{}" >> "$(pwd)/$(paramas.RELEASEVERSION)/quay-coordinates.json"
+                      echo "{}" >> "$(pwd)/$(params.RELEASEVERSION)/quay-coordinates.json"
                   fi
               }
 
