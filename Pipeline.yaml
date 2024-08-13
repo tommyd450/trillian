@@ -125,8 +125,8 @@ spec:
                   echo ${APP_NAME}
                   jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME "$(params.SNAPSHOT)" '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
                   jq_update_file
-                  component_names=($(kubectl get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
-                  component_images=($(kubectl get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
+                  component_names=($(oc get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
+                  component_images=($(oc get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
 
                   for index in "${!component_names[@]}"; do 
                       if [[ $logging == 0 ]]; then
