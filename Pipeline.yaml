@@ -101,9 +101,9 @@ spec:
               create_directory_structure
 
               cd "$(pwd)/$(params.RELEASEVERSION)"
-              readarray components < <(oc get snapshot ${snapshotid} -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
+              readarray components < <(oc get snapshot/${snapshotid} -n rhtas-tenant -o json | jq .spec.components[].containerImage | cut -d "\"" -f 2)
               echo ${components}
-              APP_NAME=$(oc get snapshot ${snapshotid} -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
+              APP_NAME=$(oc get snapshot/${snapshotid} -n rhtas-tenant -o json | jq '.spec.application' | cut -d "\"" -f 2)
               prod_path="$(pwd)/quay-coordinates.json"
               tmp_path="$(pwd)/quay-tmp-coordinates.json"
               day=$(date +'%Y-%m-%d')
@@ -123,10 +123,10 @@ spec:
               generate_components() {
                   echo "${APP_NAME} does not exist within the coordinates file adding entry to the coordinates file"
                   echo ${APP_NAME}
-                  jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME "$(params.SNAPSHOT)" '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
+                  jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME "${snapshotid}" '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
                   jq_update_file
-                  component_names=($(oc get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
-                  component_images=($(oc get snapshot $(params.SNAPSHOT) -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
+                  component_names=($(oc get snapshot/${snapshotid} -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
+                  component_images=($(oc get snapshot/${snapshotid} -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
 
                   for index in "${!component_names[@]}"; do 
                       if [[ $logging == 0 ]]; then
