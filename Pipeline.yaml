@@ -159,7 +159,7 @@ spec:
                   generate_components
               fi
 
-              git remote set-url origin https://tommyd450:${GIT_TOKEN}@github.com/securesign/releases.git
+              git remote set-url origin https://${GIT_TOKEN}@github.com/securesign/releases.git
               git add .
               git commit -m "Updating Snapshots coordinates on ${day} at ${current_time}"
-              git push origin $(params.RELEASEVERSION)
+              git push https://${GIT_TOKEN}@github.com/securesign/releases.git $(params.RELEASEVERSION)
