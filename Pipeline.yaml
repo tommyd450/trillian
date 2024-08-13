@@ -70,7 +70,7 @@ spec:
                 git config --global user.name "Release-Coordinator-Bot"
                 git clone https://REB:${GIT_TOKEN}@github.com/securesign/releases.git
                 cd releases
-                git remote set-url origin https://${GIT_TOKEN}@github.com/securesign/releases.git
+                git remote set-url origin https://REB:${GIT_TOKEN}@github.com/securesign/releases.git
                 git fetch origin
                 if [ `git branch --list $(params.RELEASEVERSION)` ]; then
                   git checkout $(params.RELEASEVERSION)
