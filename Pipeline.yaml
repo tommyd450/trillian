@@ -59,6 +59,7 @@ spec:
               dnf -y install jq
               dnf -y install gh
               dnf -y install sed
+              dnf -y install git
 
               echo $(params.SNAPSHOT)
               SNAPSHOTID=$(echo $(params.SNAPSHOT))
