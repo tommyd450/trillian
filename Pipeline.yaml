@@ -92,10 +92,17 @@ spec:
                       "$(pwd)/$(params.RELEASEVERSION)/releases" "$(pwd)/$(params.RELEASEVERSION)/testingResources"
                   fi
 
+                  if [ -f "$(pwd)/1.0.4/quay-coordinates.json" ]; then
+                      echo "File Exists"
+                  else
+                      echo yup
+                  fi
+
                   if [ -f "$(pwd)/$(params.RELEASEVERSION))/quay-coordinates.json" ]; then
-                    echo "Quay Coordinate File Exists"
+                      echo "Quay Coordinate File Exists"
                   else
                       pwd
+                      ls
                       echo "Creating Quay Coordinate File"
                       echo "{}" >> "$(pwd)/$(params.RELEASEVERSION)/quay-coordinates.json"
                   fi
