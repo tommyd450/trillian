@@ -56,7 +56,6 @@ spec:
                     key: $(params.GIT_SECRET_TOKEN)
             script: |
               dnf -y install jq
-              dnf -y install gh
               dnf -y install sed
               dnf -y install git
 
