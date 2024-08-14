@@ -64,6 +64,7 @@ spec:
               echo $(params.SNAPSHOT)
               SNAPSHOTID=$(echo $(params.SNAPSHOT))
               snapshotid=$(echo ${SNAPSHOTID##*/})
+              echo ${snapshotid}
 
               fetch_and_config_repo(){
                 git config --global user.email "tdalton@redhat.com"
@@ -92,8 +93,9 @@ spec:
                   fi
 
                   if [ -f "$(pwd)/$(params.RELEASEVERSION))/quay-coordinates.json" ]; then
-                  echo "Quay Coordinate File Exists"
+                    echo "Quay Coordinate File Exists"
                   else
+                      echo pwd
                       echo "Creating Quay Coordinate File"
                       echo "{}" >> "$(pwd)/$(params.RELEASEVERSION)/quay-coordinates.json"
                   fi
@@ -125,7 +127,7 @@ spec:
               generate_components() {
                   echo "${APP_NAME} does not exist within the coordinates file adding entry to the coordinates file"
                   echo ${APP_NAME}
-                  jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME "${snapshotid}" '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
+                  jq --arg APPLICATION_NAME ${APP_NAME} --arg SNAPSHOT_NAME ${snapshotid} '.[($APPLICATION_NAME)]={"snapshot_name": $SNAPSHOT_NAME}' $prod_path > $tmp_path
                   jq_update_file
                   component_names=($(oc get snapshot/${snapshotid} -o json | jq '.spec.components[].name' | cut -d "\"" -f 2))
                   component_images=($(oc get snapshot/${snapshotid} -o json | jq '.spec.components[].containerImage' | cut -d "\"" -f 2))
