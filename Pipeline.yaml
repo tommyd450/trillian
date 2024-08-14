@@ -86,7 +86,7 @@ spec:
                   if [ -d "$(pwd)/$(params.RELEASEVERSION)" ]; then
                     echo "Directory Structure already exists skipping."
                   else
-                    echo "Directory Structure does not exist, creating it now."
+                    echo "Directory Structure does not exist, creating it now"
                     mkdir "$(pwd)/$(params.RELEASEVERSION)" "$(pwd)/$(params.RELEASEVERSION)/releasePlans" \
                     "$(pwd)/$(params.RELEASEVERSION)/releases" "$(pwd)/$(params.RELEASEVERSION)/testingResources"
                   fi
@@ -97,7 +97,7 @@ spec:
                     echo yup
                   fi
 
-                  if [ -f "$(params.RELEASEVERSION))/quay-coordinates.json" ]; then
+                  if [ -f "$(pwd)/$(params.RELEASEVERSION)/quay-coordinates.json" ]; then
                     echo "Quay Coordinate File Exists"
                   else
                     echo "Creating Quay Coordinate File"
