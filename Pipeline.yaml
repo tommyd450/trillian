@@ -55,6 +55,7 @@ spec:
                     name: $(params.GIT_SECRET_NAME)
                     key: $(params.GIT_SECRET_TOKEN)
             script: |
+              #!/usr/bin/env sh
               dnf -y install jq
               dnf -y install sed
               dnf -y install git
@@ -89,12 +90,6 @@ spec:
                     echo "Directory Structure does not exist, creating it now"
                     mkdir "$(pwd)/$(params.RELEASEVERSION)" "$(pwd)/$(params.RELEASEVERSION)/releasePlans" \
                     "$(pwd)/$(params.RELEASEVERSION)/releases" "$(pwd)/$(params.RELEASEVERSION)/testingResources"
-                  fi
-
-                  if [ -f "$(pwd)/1.0.4/quay-coordinates.json" ]; then
-                    echo "File Exists"
-                  else
-                    echo yup
                   fi
 
                   if [ -f "$(pwd)/$(params.RELEASEVERSION)/quay-coordinates.json" ]; then
