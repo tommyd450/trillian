@@ -95,7 +95,7 @@ spec:
                   if [ -f "$(pwd)/$(params.RELEASEVERSION))/quay-coordinates.json" ]; then
                     echo "Quay Coordinate File Exists"
                   else
-                      echo pwd
+                      pwd
                       echo "Creating Quay Coordinate File"
                       echo "{}" >> "$(pwd)/$(params.RELEASEVERSION)/quay-coordinates.json"
                   fi
