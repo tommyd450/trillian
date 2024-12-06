@@ -14,7 +14,7 @@ provider "google" {
 
 provider "google-beta" {
   project = var.gcp_project
-  version = "~> 3.0.0-beta.1"
+  version = "~> 3.90.0"
 }
 
 # Enable required API in the project
