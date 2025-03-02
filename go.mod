@@ -1,6 +1,8 @@
 module github.com/google/trillian
 
-go 1.19
+go 1.21
+
+toolchain go1.22.9
 
 require (
 	bitbucket.org/creachadair/shell v0.0.7
@@ -13,7 +15,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang/mock v1.6.0
 	github.com/google/btree v1.1.2
-	github.com/google/go-cmp v0.5.9
+	github.com/google/go-cmp v0.7.0
 	github.com/google/go-licenses v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/letsencrypt/pkcs11key/v4 v4.0.0
