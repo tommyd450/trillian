@@ -8,7 +8,7 @@ require (
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.14
 	github.com/apache/beam/sdks/v2 v2.47.0-RC3
 	github.com/cockroachdb/cockroach-go/v2 v2.3.3
-	github.com/fullstorydev/grpcurl v1.8.7
+	github.com/fullstorydev/grpcurl v1.9.3
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang/mock v1.6.0
