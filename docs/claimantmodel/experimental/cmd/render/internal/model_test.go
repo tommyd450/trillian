@@ -21,7 +21,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	claimant "github.com/google/trillian/docs/claimantmodel/experimental/cmd/render/internal"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 func TestModelAndQuestionnaire(t *testing.T) {
