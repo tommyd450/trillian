@@ -1,6 +1,8 @@
 module github.com/google/trillian
 
-go 1.19
+go 1.21
+
+toolchain go1.22.9
 
 require (
 	bitbucket.org/creachadair/shell v0.0.7
@@ -35,7 +37,7 @@ require (
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1
 	google.golang.org/grpc v1.54.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.3.0
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.36.5
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/klog/v2 v2.100.1
 )
