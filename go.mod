@@ -56,7 +56,6 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/apache/beam v2.2.1-0.20240131192626-89d1c06e1eab+incompatible // indirect
 	github.com/aws/aws-sdk-go v1.46.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/speakeasy v0.1.0 // indirect
@@ -126,7 +125,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.29.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
-	github.com/opencontainers/image-spec v1.1.0-rc5 // indirect
+	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/otiai10/copy v1.6.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.45.0 // indirect
