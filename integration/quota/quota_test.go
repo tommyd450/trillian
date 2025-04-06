@@ -45,7 +45,7 @@ import (
 	"google.golang.org/grpc/status"
 	"k8s.io/klog/v2"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2"
 )
 
 func TestEtcdRateLimiting(t *testing.T) {

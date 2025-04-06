@@ -38,7 +38,7 @@ import (
 	"k8s.io/klog/v2"
 
 	sa "github.com/google/trillian/server/admin"
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2"
 )
 
 func TestAdminServer_CreateTree(t *testing.T) {

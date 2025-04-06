@@ -37,7 +37,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"k8s.io/klog/v2"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
