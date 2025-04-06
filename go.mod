@@ -1,6 +1,8 @@
 module github.com/google/trillian
 
-go 1.21
+go 1.23.0
+
+toolchain go1.23.8
 
 require (
 	bitbucket.org/creachadair/shell v0.0.8
@@ -29,7 +31,7 @@ require (
 	go.opencensus.io v0.24.0
 	golang.org/x/crypto v0.18.0
 	golang.org/x/sync v0.6.0
-	golang.org/x/sys v0.16.0
+	golang.org/x/sys v0.31.0
 	golang.org/x/tools v0.17.0
 	google.golang.org/api v0.160.0
 	google.golang.org/genproto v0.0.0-20240102182953-50ed04b92917
@@ -56,7 +58,6 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/apache/beam v2.2.1-0.20240131192626-89d1c06e1eab+incompatible // indirect
 	github.com/aws/aws-sdk-go v1.46.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/speakeasy v0.1.0 // indirect
@@ -147,7 +148,7 @@ require (
 	github.com/xiang90/probing v0.0.0-20221125231312-a49e3df8f510 // indirect
 	go.etcd.io/bbolt v1.3.8 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.11 // indirect
-	go.etcd.io/etcd/client/pkg/v3 v3.5.11 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.5.21 // indirect
 	go.etcd.io/etcd/client/v2 v2.305.11 // indirect
 	go.etcd.io/etcd/etcdutl/v3 v3.5.11 // indirect
 	go.etcd.io/etcd/pkg/v3 v3.5.11 // indirect
