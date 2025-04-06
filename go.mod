@@ -135,7 +135,7 @@ require (
 	go.etcd.io/bbolt v1.3.7 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.8 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.8 // indirect
-	go.etcd.io/etcd/client/v2 v2.305.8 // indirect
+	go.etcd.io/etcd/client/v2 v2.305.21 // indirect
 	go.etcd.io/etcd/etcdutl/v3 v3.5.8 // indirect
 	go.etcd.io/etcd/pkg/v3 v3.5.8 // indirect
 	go.etcd.io/etcd/raft/v3 v3.5.8 // indirect
