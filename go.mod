@@ -23,7 +23,7 @@ require (
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/transparency-dev/merkle v0.0.2
 	go.etcd.io/etcd/client/v3 v3.5.8
-	go.etcd.io/etcd/etcdctl/v3 v3.5.8
+	go.etcd.io/etcd/etcdctl/v3 v3.5.21
 	go.etcd.io/etcd/server/v3 v3.5.8
 	go.etcd.io/etcd/v3 v3.5.8
 	go.opencensus.io v0.24.0
