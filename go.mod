@@ -49,7 +49,7 @@ require (
 	cloud.google.com/go/iam v1.1.5 // indirect
 	cloud.google.com/go/longrunning v0.5.4 // indirect
 	cloud.google.com/go/monitoring v1.17.0 // indirect
-	cloud.google.com/go/profiler v0.4.0 // indirect
+	cloud.google.com/go/profiler v0.4.2 // indirect
 	cloud.google.com/go/storage v1.36.0 // indirect
 	cloud.google.com/go/trace v1.10.4 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
