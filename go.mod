@@ -138,7 +138,7 @@ require (
 	go.etcd.io/etcd/client/v2 v2.305.8 // indirect
 	go.etcd.io/etcd/etcdutl/v3 v3.5.8 // indirect
 	go.etcd.io/etcd/pkg/v3 v3.5.8 // indirect
-	go.etcd.io/etcd/raft/v3 v3.5.8 // indirect
+	go.etcd.io/etcd/raft/v3 v3.5.21 // indirect
 	go.etcd.io/etcd/tests/v3 v3.5.8 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.28.0 // indirect
 	go.opentelemetry.io/otel v1.6.1 // indirect
